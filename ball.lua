@@ -27,19 +27,19 @@ function ball.draw()
                         ball.position.x - ball.radius,
                         ball.position.y - ball.radius)
 
-    local segments_in_circle = 16
-    love.graphics.circle( 'line',
-                        ball.position.x,
-                        ball.position.y,
-                        ball.radius,
-                        segments_in_circle )
+    -- local segments_in_circle = 16
+    -- love.graphics.circle( 'line',
+    --                     ball.position.x,
+    --                     ball.position.y,
+    --                     ball.radius,
+    --                     segments_in_circle )
 end
 
 function ball.rebound(shift_ball)
     -- local shift_ball = vector(shift_b)
     local min_shift = math.min( math.abs(shift_ball.x),
                                 math.abs(shift_ball.y))
-    if math.abs(shift_ball_x) == min_shift then
+    if math.abs(shift_ball.x) == min_shift then
         shift_ball.y = 0
     else
         shift_ball.x = 0
