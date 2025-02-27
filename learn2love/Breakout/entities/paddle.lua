@@ -21,10 +21,12 @@ return function(x_pos, y_pos)
         end
         local self_x, self_y = self.body:getPosition()
         if input.left then
-            self.body:setPosition(self_x - 10, self_y)
+            local new_x = math.max(self_x - (400 * dt), 100)
+            self.body:setPosition(new_x - 10, self_y)
             -- print(input.left)
         elseif input.right then
-            self.body:setPosition(self_x + 10, self_y)
+            local new_x = math.min(self_x + (400 * dt), 700)
+            self.body:setPosition(new_x + 10, self_y)
             -- print(input.right)
         end
     end
