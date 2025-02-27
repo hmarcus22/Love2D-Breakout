@@ -9,6 +9,12 @@ local world = require('world')
 local brick = require('entities/brick')
 
 local entities = {
+    boundry_bottom(400, 606),
+    boundry_left(-6, 300),
+    boundry_right(806, 300),
+    boundry_top(400, -6),
+    ball(200, 200),
+    paddle(300, 500),
     brick(100, 100),
     brick(200, 100),
     brick(300, 100)
@@ -34,15 +40,10 @@ love.focus = function(f)
 end
 
 love.draw = function()
-    local ball_x, ball_y = ball.body:getWorldCenter()
-    love.graphics.circle('fill', ball_x, ball_y, ball.shape:getRadius())
-    love.graphics.polygon(
-                            'line',
-                             paddle.body:getWorldPoints(paddle.shape:getPoints())
-                         )
-    
     for _, entity in ipairs(entities) do
-        love.graphics.polygon('fill', entity.body:getWorldPoints(entity.shape:getPoints()))
+        if entity.draw then 
+            entity:draw() 
+        end
     end
 
                          if paused then
