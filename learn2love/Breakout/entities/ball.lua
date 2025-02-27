@@ -10,6 +10,7 @@ return function(x_pos, y_pos)
     entity.fixture = love.physics.newFixture(entity.body, entity.shape)
     entity.fixture:setRestitution(1)
     entity.fixture:setUserData(entity)
+    entity.fixture:setFriction(0)
 
     entity.draw = function(self)
         local self_x, self_y = self.body:getWorldCenter()
