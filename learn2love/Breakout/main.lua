@@ -6,6 +6,13 @@ local boundry_top = require('entities/boundry-top')
 local paddle = require('entities/paddle')
 local ball = require('entities/ball')
 local world = require('world')
+local brick = require('entities/brick')
+
+local entities = {
+    brick(100, 100),
+    brick(200, 100),
+    brick(300, 100)
+}
 
 local paused = false
 
@@ -27,17 +34,18 @@ love.focus = function(f)
 end
 
 love.draw = function()
-    -- love.graphics.polygon('line', boundry_bottom.body:getWorldPoints(boundry_bottom.shape:getPoints()))
-    -- love.graphics.polygon('line', boundry_left.body:getWorldPoints(boundry_left.shape:getPoints()))
-    -- love.graphics.polygon('line', boundry_right.body:getWorldPoints(boundry_right.shape:getPoints()))
-    -- love.graphics.polygon('line', boundry_top.body:getWorldPoints(boundry_top.shape:getPoints()))
     local ball_x, ball_y = ball.body:getWorldCenter()
     love.graphics.circle('fill', ball_x, ball_y, ball.shape:getRadius())
     love.graphics.polygon(
                             'line',
                              paddle.body:getWorldPoints(paddle.shape:getPoints())
                          )
-    if paused then
+    
+    for _, entity in ipairs(entities) do
+        love.graphics.polygon('fill', entity.body:getWorldPoints(entity.shape:getPoints()))
+    end
+
+                         if paused then
         love.graphics.print("game is paused", 10, 10)
     end
 end
