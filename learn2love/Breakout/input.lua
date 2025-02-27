@@ -10,6 +10,7 @@ input.paused = false
 input.press = function(pressed_key)
     if press_functions[pressed_key] then
         press_functions[pressed_key]()
+        print(pressed_key)
     end
 end
 
@@ -30,6 +31,9 @@ press_functions.left = function()
 end
 press_functions.right = function()
     input.right = true
+end
+press_functions.escape = function()
+    love.event.quit()
 end
 press_functions.space = function()
     input.paused = not input.paused

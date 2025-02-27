@@ -2,27 +2,17 @@ local entities = require('entities')
 local world = require('world')
 local input = require('input')
 
-love.focus = function(f)
-    if not f then
-        paused = true
-    elseif f then
-        paused = false
-    end
-end
-
 love.draw = function()
     for _, entity in ipairs(entities) do
-        if entity.draw then 
-            entity:draw() 
-        end
-    end
-
-                         if paused then
-        love.graphics.print("game is paused", 10, 10)
+        if entity.draw then entity:draw() end
     end
 end
 
-love.keypressed = function(key_pressed)
+love.focus = function(focused)
+    input.toggle_focus(focused)
+end
+
+love.keypressed = function(pressed_key)
     input.press(pressed_key)
 end
 
