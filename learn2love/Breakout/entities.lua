@@ -5,6 +5,7 @@ local paddle = require('entities/paddle')
 local ball = require('entities/ball')
 local world = require('world')
 local brick = require('entities/brick')
+local pause = require('entities/pause')
 
 return {
     boundry_bottom(400, 606),
@@ -15,5 +16,7 @@ return {
     paddle(300, 500),
     brick(100, 100),
     brick(200, 100),
-    brick(300, 100)
+    brick(300, 100),
+    pause()
+    
 }

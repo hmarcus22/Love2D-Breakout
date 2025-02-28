@@ -10,7 +10,6 @@ input.paused = false
 input.press = function(pressed_key)
     if press_functions[pressed_key] then
         press_functions[pressed_key]()
-        print(pressed_key)
     end
 end
 

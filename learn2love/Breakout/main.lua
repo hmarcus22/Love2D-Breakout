@@ -3,9 +3,6 @@ local world = require('world')
 local input = require('input')
 
 love.draw = function()
-    if input.paused then
-        love.graphics.print("Game is paused", 20, 20)
-    end
     for _, entity in ipairs(entities) do
         if entity.draw then entity:draw() end
     end
@@ -31,4 +28,3 @@ love.update = function(dt)
         world:update(dt)
     end
 end
-  
