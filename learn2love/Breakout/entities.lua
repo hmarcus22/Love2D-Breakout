@@ -6,6 +6,8 @@ local ball = require('entities/ball')
 local world = require('world')
 local brick = require('entities/brick')
 local pause = require('entities/pause')
+local game_over = require('entities/game_over')
+local stage_clear = require('entities/stage_clear')
 
 local entities = {
     boundry_bottom(400, 606),
@@ -14,7 +16,9 @@ local entities = {
     boundry_top(400, -6),
     ball(200, 200),
     paddle(300, 500),
-    pause()
+    pause(),
+    stage_clear(),
+    game_over()
     
 }
 
