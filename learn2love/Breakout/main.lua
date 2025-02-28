@@ -1,6 +1,7 @@
 local entities = require('entities')
 local world = require('world')
 local input = require('input')
+local state = require('state')
 
 love.draw = function()
     for _, entity in ipairs(entities) do
@@ -21,18 +22,22 @@ love.keyreleased = function(released_key)
 end
 
 love.update = function(dt)
-    if not input.paused then
-        local index = 1
-        while index <= #entities do
-            local entity = entities[index]
-            if entity.update then entity:update(dt) end
-            if entity.health == 0 then
-                table.remove(entities, index)
-                entity.fixture:destroy()
-            else
-                index = index + 1
-            end
-        end
-        world:update(dt)
+    if state.game_over or state.paused or state.stage_cleared then
+        return
     end
+    
+
+    local index = 1
+    while index <= #entities do
+        local entity = entities[index]
+        if entity.update then entity:update(dt) end
+        if entity.health == 0 then
+            table.remove(entities, index)
+            entity.fixture:destroy()
+        else
+            index = index + 1
+        end
+    end
+    world:update(dt)
+   
 end

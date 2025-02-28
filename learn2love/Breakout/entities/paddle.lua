@@ -1,5 +1,5 @@
 local world = require('world')
-local input = require('input')
+local state = require('state')
 
 
 
@@ -22,13 +22,13 @@ return function(x_pos, y_pos)
     end
 
     entity.update = function(self, dt)
-        if input.left and input.right then
+        if state.button_left and state.button_right then
             return
         end
         local self_x = self.body:getX()
-        if input.left and self_x > left_boundry then
+        if state.button_left and self_x > left_boundry then
             self.body:setLinearVelocity(-entity_speed, 0)
-        elseif input.right and self_x < right_boundry then
+        elseif state.button_right and self_x < right_boundry then
             self.body:setLinearVelocity(entity_speed, 0)
         else
             self.body:setLinearVelocity(0, 0)

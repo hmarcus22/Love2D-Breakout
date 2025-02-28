@@ -1,4 +1,4 @@
-local input = require('input')
+local state = require('state')
 
 return function()
     
@@ -7,7 +7,7 @@ return function()
     local entity = {}
 
     entity.draw = function(selfe)
-        if input.paused then
+        if state.paused then
                 love.graphics.print(
                     {{0.2, 1, 0.2, 1}, 'PAUSED'},
                     math.floor(window_width / 2) -54,
