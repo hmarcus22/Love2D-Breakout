@@ -33,7 +33,6 @@ return function(x_pos, y_pos)
         else
             self.body:setLinearDamping(0)
         end
-        print(speed)
     end
 
     return entity
