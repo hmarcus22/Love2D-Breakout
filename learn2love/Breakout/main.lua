@@ -21,10 +21,22 @@ love.keyreleased = function(released_key)
     input.release(released_key)
 end
 
+love.mousereleased = function(mX, mY, pButton)
+    input.mouse_release(pButton)
+end
+
+love.mousepressed = function(mX, mY, rButton)
+    input.mouse_press(rButton)
+end
+
 love.update = function(dt)
     if state.game_over or state.paused or state.stage_cleared then
         return
     end
+    if not state.game_over or not state.paused or not stage_cleared then
+        state.mouse_grab = not state.mouse_grab
+    end
+    love.mouse.setGrabbed(state.mouse_grab)
     
     local have_bricks = false
 

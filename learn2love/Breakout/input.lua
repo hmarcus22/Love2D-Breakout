@@ -23,6 +23,25 @@ input.toggle_focus = function(focused)
     end
 end
 
+input.mouse_release = function(button)
+    local old_mouse_click = state.mouse_click
+    if button == 1 and old_mouse_click then
+        state.mouse_click = false
+    end
+    
+    print(state.mouse_click)
+    print(state.serve)
+end
+
+input.mouse_press = function(button)
+    if button == 1 then
+        state.mouse_click = true
+    end
+    print(state.mouse_click)
+    print(state.serve)
+end
+
+
 press_functions.left = function()
     state.button_left = true
 end

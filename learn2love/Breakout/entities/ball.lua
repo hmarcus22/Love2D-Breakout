@@ -1,4 +1,5 @@
 local world = require('world')
+local state = require('state')
 
 return function(x_pos, y_pos)
     
@@ -20,18 +21,31 @@ return function(x_pos, y_pos)
     end
 
     entity.update = function(self)
+        
         local vel_x, vel_y = self.body:getLinearVelocity()
         local speed = math.abs(vel_x) + math.abs(vel_y)
 
-        local vel_x_is_critical = math.abs(vel_x) > entity_max_speed * 2
-        local vel_y_is_critical = math.abs(vel_y) > entity_max_speed * 2
-        if vel_x_is_critical or vel_y_is_critical then
-            self.body:setLinearVelocity(vel_x * .75, vel_y * .75)
-        end
-        if speed > entity_max_speed then
-            self.body:setLinearDamping(0.1)
+        if state.serve then
+            local x = state.paddle_pos.x
+            local y = state.paddle_pos.y - 15
+            self.body:setLinearVelocity(0, 0)
+            self.body:setPosition(x, y)
+
+            if state.mouse_click then
+                self.body:setLinearVelocity(x - 300, 300)
+                state.serve = false
+            end
         else
-            self.body:setLinearDamping(0)
+            local vel_x_is_critical = math.abs(vel_x) > entity_max_speed * 2
+            local vel_y_is_critical = math.abs(vel_y) > entity_max_speed * 2
+            if vel_x_is_critical or vel_y_is_critical then
+                self.body:setLinearVelocity(vel_x * .75, vel_y * .75)
+            end
+            if speed > entity_max_speed then
+                self.body:setLinearDamping(0.1)
+            else
+                self.body:setLinearDamping(0)
+            end
         end
     end
 

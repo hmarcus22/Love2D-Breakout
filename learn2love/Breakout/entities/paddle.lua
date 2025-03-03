@@ -7,9 +7,9 @@ return function(x_pos, y_pos)
     local window_width = love.window.getMode()
     local entity_width = 120
     local entity_height = 20
-    local entity_speed = 600
-    local left_boundry = (entity_width /2) + 2
-    local right_boundry = window_width - (entity_width / 2) - 2
+    local entity_speed = 800
+    local left_boundry = (entity_width /2) + 5
+    local right_boundry = window_width - (entity_width / 2) - 5
 
     local entity = {}
     entity.body = love.physics.newBody(world, x_pos, y_pos, 'kinematic')
@@ -22,17 +22,23 @@ return function(x_pos, y_pos)
     end
 
     entity.update = function(self, dt)
-        if state.button_left and state.button_right then
-            return
-        end
+
         local self_x = self.body:getX()
-        if state.button_left and self_x > left_boundry then
-            self.body:setLinearVelocity(-entity_speed, 0)
-        elseif state.button_right and self_x < right_boundry then
-            self.body:setLinearVelocity(entity_speed, 0)
-        else
-            self.body:setLinearVelocity(0, 0)
+        local mouse_x = love.mouse.getX()
+        if state.serve then
+            state.paddle_pos = {x = self_x, y = y_pos}
         end
+
+        if mouse_x >= self_x -2 and mouse_x <= self_x +2 then
+            return
+        end 
+
+        if mouse_x < self_x and mouse_x > left_boundry then
+            self.body:setX(self_x - (entity_speed * dt))
+        elseif mouse_x > self_x and self_x < right_boundry then
+            self.body:setX(self_x + (entity_speed * dt))
+        end
+   
     end
 
     return entity
