@@ -3,6 +3,10 @@ local world = require('world')
 local input = require('input')
 local state = require('state')
 
+love.load = function()
+    love.mouse.setGrabbed(state.mouse_grab)
+end
+
 love.draw = function()
     for _, entity in ipairs(entities) do
         if entity.draw then entity:draw() end
@@ -36,7 +40,9 @@ love.update = function(dt)
     if not state.game_over or not state.paused or not stage_cleared then
         state.mouse_grab = not state.mouse_grab
     end
-    love.mouse.setGrabbed(state.mouse_grab)
+    if state.mouse_grab then
+        love.mouse.setVisible(false)
+    end
     
     local have_bricks = false
 

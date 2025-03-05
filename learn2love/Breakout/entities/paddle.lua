@@ -7,7 +7,7 @@ return function(x_pos, y_pos)
     local window_width = love.window.getMode()
     local entity_width = 120
     local entity_height = 20
-    local entity_speed = 800
+    local entity_speed = 7
     local left_boundry = (entity_width /2) + 5
     local right_boundry = window_width - (entity_width / 2) - 5
 
@@ -21,23 +21,33 @@ return function(x_pos, y_pos)
         love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
     end
 
-    entity.update = function(self, dt)
-
+    entity.follow_mouse = function(self, dt)
+        local mouse_x, y = love.mouse.getPosition()
         local self_x = self.body:getX()
-        local mouse_x = love.mouse.getX()
+        local velocity = math.abs(self_x - mouse_x)
+        if velocity < 10 then
+            velocity = velocity * 0.65
+        end
+        
         if state.serve then
             state.paddle_pos = {x = self_x, y = y_pos}
         end
 
-        if mouse_x >= self_x -2 and mouse_x <= self_x +2 then
+        if mouse_x >= self_x -3 and mouse_x <= self_x +3 then
             return
         end 
 
-        if mouse_x < self_x and mouse_x > left_boundry then
-            self.body:setX(self_x - (entity_speed * dt))
+        if mouse_x < self_x and self_x > left_boundry then
+            self.body:setX(self_x - (entity_speed * velocity * dt))
         elseif mouse_x > self_x and self_x < right_boundry then
-            self.body:setX(self_x + (entity_speed * dt))
+            self.body:setX(self_x + (entity_speed * velocity * dt))
         end
+    end
+
+    entity.update = function(self, dt)
+
+              
+        self.follow_mouse(self, dt)
    
     end
 

@@ -14,19 +14,19 @@ return function(x_pos, y_pos)
     entity.fixture:setRestitution(1)
     entity.fixture:setUserData(entity)
     entity.fixture:setFriction(0)
-
+    entity.texture = love.graphics.newImage('img/ball_lo.png')
+    
     entity.draw = function(self)
         local self_x, self_y = self.body:getWorldCenter()
-        love.graphics.circle('fill', self_x, self_y, self.shape:getRadius())
+        local rotation = self.body:getAngle()  -- try something else
+        print(rotation)
+        love.graphics.draw(self.texture, self_x, self_y, rotation, 1, 1, self.shape:getRadius(), self.shape:getRadius())
+        -- love.graphics.circle('fill', self_x, self_y, self.shape:getRadius())
     end
 
-    entity.update = function(self)
-        
-        local vel_x, vel_y = self.body:getLinearVelocity()
-        local speed = math.abs(vel_x) + math.abs(vel_y)
+    entity.serve = function(self)
 
-        if state.serve then
-            local x = state.paddle_pos.x
+        local x = state.paddle_pos.x
             local y = state.paddle_pos.y - 15
             self.body:setLinearVelocity(0, 0)
             self.body:setPosition(x, y)
@@ -35,6 +35,15 @@ return function(x_pos, y_pos)
                 self.body:setLinearVelocity(x - 300, 300)
                 state.serve = false
             end
+    end
+
+    entity.update = function(self)
+        
+        local vel_x, vel_y = self.body:getLinearVelocity()
+        local speed = math.abs(vel_x) + math.abs(vel_y)
+
+        if state.serve then
+            self.serve(self)
         else
             local vel_x_is_critical = math.abs(vel_x) > entity_max_speed * 2
             local vel_y_is_critical = math.abs(vel_y) > entity_max_speed * 2
