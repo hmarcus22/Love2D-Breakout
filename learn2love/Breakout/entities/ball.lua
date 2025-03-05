@@ -13,14 +13,20 @@ return function(x_pos, y_pos)
     entity.fixture = love.physics.newFixture(entity.body, entity.shape)
     entity.fixture:setRestitution(1)
     entity.fixture:setUserData(entity)
-    entity.fixture:setFriction(0)
+    entity.fixture:setFriction(0.5)
     entity.texture = love.graphics.newImage('img/ball_lo.png')
+    entity.body:setFixedRotation(false)
+    
+    -- entity.end_contact = function(self)
+        
+    --     self.body:applayLinearImpulse(0, 1000)
+    -- end
     
     entity.draw = function(self)
         local self_x, self_y = self.body:getWorldCenter()
-        local rotation = self.body:getAngle()  -- try something else
+        local rotation = self.body:getAngle()
         print(rotation)
-        love.graphics.draw(self.texture, self_x, self_y, rotation, 1, 1, self.shape:getRadius(), self.shape:getRadius())
+        love.graphics.draw(self.texture, self_x, self_y, rotation, 1, 1, self.texture:getWidth()/2, self.texture:getHeight()/2)
         -- love.graphics.circle('fill', self_x, self_y, self.shape:getRadius())
     end
 
