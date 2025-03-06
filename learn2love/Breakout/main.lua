@@ -35,10 +35,11 @@ end
 
 love.update = function(dt)
     if state.game_over or state.paused or state.stage_cleared then
+        -- state.mouse_grab = not state.mouse_grab
         return
     end
     if not state.game_over or not state.paused or not stage_cleared then
-        state.mouse_grab = not state.mouse_grab
+        -- state.mouse_grab = not state.mouse_grab
     end
     if state.mouse_grab then
         love.mouse.setVisible(false)

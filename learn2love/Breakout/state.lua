@@ -2,7 +2,7 @@ return {
     button_left = false,
     button_right = false,
     mouse_click = false,
-    mouse_grab = false,
+    mouse_grab = true,
     serve = true,
     game_over = false,
     palette = {

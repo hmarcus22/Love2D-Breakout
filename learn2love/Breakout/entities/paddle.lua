@@ -10,12 +10,14 @@ return function(x_pos, y_pos)
     local entity_speed = 7
     local left_boundry = (entity_width /2) + 5
     local right_boundry = window_width - (entity_width / 2) - 5
+    local polygonshape = {-60, 10, 60, 10, 60, -3, 55, -7, 20, -10, -20, -10, -55, -7, -60, -3}
 
     local entity = {}
     entity.body = love.physics.newBody(world, x_pos, y_pos, 'kinematic')
-    entity.shape = love.physics.newRectangleShape(entity_width, entity_height)
+    entity.shape = love.physics.newPolygonShape(unpack(polygonshape))
     entity.fixture = love.physics.newFixture(entity.body, entity.shape)
     entity.fixture:setUserData(entity)
+    entity.fixture:setFriction(0.5)
 
     entity.draw = function(self)
         love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
