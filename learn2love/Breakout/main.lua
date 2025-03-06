@@ -47,7 +47,7 @@ love.update = function(dt)
     
     local have_bricks = false
 
-    local index = 1
+    local index = 1 -- Move bricks handling to level.update()
     while index <= #entities do
         local entity = entities[index]
         if entity.type == 'brick' then have_bricks = true end
