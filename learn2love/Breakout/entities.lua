@@ -8,6 +8,8 @@ local brick = require('entities/brick')
 local pause = require('entities/pause')
 local game_over = require('entities/game_over')
 local stage_clear = require('entities/stage_clear')
+local game = require('entities/game')
+local level = require('entities/level')
 
 local entities = {
     boundry_bottom(400, 606),
@@ -18,8 +20,9 @@ local entities = {
     paddle(300, 500),
     pause(),
     stage_clear(),
-    game_over()
-    
+    game_over(),
+    game(),
+    level(brick)
 }
 
 local row_width = love.window.getMode() -20

@@ -17,10 +17,11 @@ return function(x_pos, y_pos)
     entity.texture = love.graphics.newImage('img/ball_lo.png')
     entity.body:setFixedRotation(false)
     entity.body:setMass(20)
+    entity.type = 'ball'
     
     entity.end_contact = function(self)
-        -- speed upp om collison
-        local force = 60
+        
+        local force = 60 -- amount to speed up ball on collision
         local x, y = self.body:getLinearVelocity()
         print (x, y)
         if y < 0 then force = - force end
@@ -32,19 +33,18 @@ return function(x_pos, y_pos)
         local self_x, self_y = self.body:getWorldCenter()
         local rotation = self.body:getAngle()
         love.graphics.draw(self.texture, self_x, self_y, rotation, 1, 1, self.texture:getWidth()/2, self.texture:getHeight()/2)
-        -- love.graphics.circle('fill', self_x, self_y, self.shape:getRadius())
     end
 
-    entity.serve = function(self)
+    entity.serve = function()
 
         local x = state.paddle_pos.x
             local y = state.paddle_pos.y - 15
-            self.body:setLinearVelocity(0, 0)
-            self.body:setPosition(x, y)
-            self.body:setAngularVelocity(0)
+            entity.body:setLinearVelocity(0, 0)
+            entity.body:setPosition(x, y)
+            entity.body:setAngularVelocity(0)
 
             if state.mouse_click then
-                self.body:setLinearVelocity(x - 300, 300)
+                entity.body:setLinearVelocity(x - 300, 300)
                 state.serve = false
             end
     end
@@ -55,7 +55,7 @@ return function(x_pos, y_pos)
         local speed = math.abs(vel_x) + math.abs(vel_y)
 
         if state.serve then
-            self.serve(self)
+            self.serve()
         else
             local vel_x_is_critical = math.abs(vel_x) > entity_max_speed * 2
             local vel_y_is_critical = math.abs(vel_y) > entity_max_speed * 2

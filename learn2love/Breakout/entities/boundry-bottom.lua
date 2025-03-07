@@ -7,6 +7,7 @@ return function(x_pos, y_pos)
     entity.shape = love.physics.newRectangleShape(800, 10)
     entity.fixture = love.physics.newFixture(entity.body, entity.shape)
     entity.fixture:setUserData(entity)
+    entity.type = 'bottom'
 
     entity.end_contact = function(selfe)
         if state.lives < 1 then

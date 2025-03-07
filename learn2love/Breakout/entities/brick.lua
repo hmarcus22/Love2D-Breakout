@@ -11,11 +11,11 @@ return function(x_pos, y_pos)
     entity.health = 2
     entity.type = 'brick'
 
-    entity.draw = function(self)
-        love.graphics.setColor(state.palette[self.health] or state.palette[5])
-        love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
-        love.graphics.setColor(state.palette[5])
-    end
+    -- entity.draw = function(self)
+    --     love.graphics.setColor(state.palette[self.health] or state.palette[5])
+    --     love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
+    --     love.graphics.setColor(state.palette[5])
+    -- end
     
     entity.end_contact = function(self)
         self.health = self.health - 1

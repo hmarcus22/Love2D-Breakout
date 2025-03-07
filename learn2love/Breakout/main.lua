@@ -34,32 +34,14 @@ love.mousepressed = function(mX, mY, rButton)
 end
 
 love.update = function(dt)
-    if state.game_over or state.paused or state.stage_cleared then
-        -- state.mouse_grab = not state.mouse_grab
-        return
-    end
-    if not state.game_over or not state.paused or not stage_cleared then
-        -- state.mouse_grab = not state.mouse_grab
-    end
+   
     if state.mouse_grab then
         love.mouse.setVisible(false)
     end
-    
-    local have_bricks = false
-
-    local index = 1 -- Move bricks handling to level.update()
-    while index <= #entities do
-        local entity = entities[index]
-        if entity.type == 'brick' then have_bricks = true end
+    for _, entity in ipairs(entities) do
         if entity.update then entity:update(dt) end
-        if entity.health == 0 then
-            table.remove(entities, index)
-            entity.fixture:destroy()
-        else
-            index = index + 1
-        end
     end
-    stage_cleared = not have_bricks
+
     world:update(dt)
    
 end
