@@ -25,11 +25,11 @@ local entities = {
     level(brick)
 }
 
-local row_width = love.window.getMode() -20
-for number = 0, 38 do
-    local brick_x = ((number * 60) % row_width) + 40
-    local brick_y = (math.floor((number * 60) / row_width) * 40) + 80
-    entities[#entities +1] = brick(brick_x, brick_y)
-end
+-- local row_width = love.window.getMode() -20
+-- for number = 0, 38 do
+--     local brick_x = ((number * 60) % row_width) + 40
+--     local brick_y = (math.floor((number * 60) / row_width) * 40) + 80
+--     entities[#entities +1] = brick(brick_x, brick_y)
+-- end
 
 return entities
