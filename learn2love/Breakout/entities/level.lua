@@ -7,14 +7,23 @@ return function(brick)
     local entity = {}
 
     entity.current_level = {}
+    entity.levels = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 
-    --Builds a generic level of bricks
+        
+    }
+
+    --Builds a generic level with bricks
         local row_width = love.window.getMode() -20
-
-        for number = 0, 38 do
+        
+        for _, brick_type in ipars(entity.levels[state.current_level]) do
             local brick_x = ((number * 60) % row_width) + 40
             local brick_y = (math.floor((number * 60) / row_width) * 40) + 80
-            entity.current_level[#entity.current_level +1] = brick(brick_x, brick_y)
+            if brick_type == 1 then
+                entity.current_level[#entity.current_level +1] = brick(brick_x, brick_y)
+            end
         end
     
 

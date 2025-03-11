@@ -15,5 +15,6 @@ return {
     paused = false,
     stage_cleared = false,
     lives = 2,
-    paddle_pos = {x = 0, y = 0}
+    paddle_pos = {x = 0, y = 0},
+    current_level = 1
 }
