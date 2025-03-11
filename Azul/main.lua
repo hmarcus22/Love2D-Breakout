@@ -4,12 +4,23 @@ local input = require "input"
 -- Debug_print
 
 for _, entity in ipairs(entities) do
+
+   
+        if entity.type == 'bucket' then
+            print(entity.id, entity.tileBucket)
+            for _, v in pairs(entity.tileBucket) do
+                print( v)
+            end
+        end
+
     
-        if entity.type == 'tile' then entity:pType() end
+   
     
 end
 
 function love.load()
+
+    entities:moveTileToBucket()
    
 end
 

@@ -2,8 +2,13 @@ local state = require('state')
 local player = require('entities/player')
 local tile = require('entities/tile')
 local gameboard = require "entities/gameboard"
+local bucket = require "entities/bucket"
 
-local entities = {}
+local entities = {
+    bucket(1),
+    bucket(2),
+    bucket(3)
+}
 
     --Add tiles
     local tileType = 1
@@ -25,7 +30,31 @@ local entities = {}
         table.insert(entities, player("name", number, board))
     end
 
-  
+    -- Move tiles to buckets
+    function entities:moveTileToBucket()
+
+        local nrBuckets = 3
+        local tmpBucket = {}
+        local count = 1
+        for _, cBucket in ipairs(self) do
+            tmpBucket = nil
+            if bucket.type == 'bucket' then
+                for i, tile in ipairs(self) do
+
+                    if count <=5 then
+                        if tile.type == 'tile' then
+                            cBucket:addTiles(tile)
+                            table.remove(self, i)
+                            
+                            count = count + 1
+                        end
+                    end
+
+                end
+            end
+            
+        end
+    end
 
 return entities
 

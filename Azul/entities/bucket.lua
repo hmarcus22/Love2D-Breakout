@@ -2,12 +2,19 @@ local Object = require "classic"
 
 local bucket = Object:extend()
 
-    function bucket:new()
+    bucket.tileBucket = {}
 
-        self.tileBucket = {}
+    function bucket:new(id)
+
+        self.id = id
+        
+        self.type = 'bucket'
     end
 
-    function bucket:addTiles()
-
+    function bucket:addTiles(tile)
+        
+            table.insert(bucket.tileBucket, tile)
         
     end
+
+    return bucket
