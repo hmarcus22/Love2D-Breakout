@@ -1,26 +1,14 @@
 local entities = require('entities')
 local input = require "input"
+local Object = require "classic"
 
--- Debug_print
 
-for _, entity in ipairs(entities) do
 
-   
-        if entity.type == 'bucket' then
-            print(entity.id, entity.tileBucket)
-            for _, v in pairs(entity.tileBucket) do
-                print( v)
-            end
-        end
 
-    
-   
-    
-end
 
 function love.load()
 
-    entities:moveTileToBucket()
+    
    
 end
 
@@ -36,9 +24,6 @@ end
 
 function love.draw()
     love.graphics.setBackgroundColor(.5, .5, .5, 1)
-    for _, entity in ipairs(entities) do
-       if entity.draw then entity:draw() end
-    
-    end
+    entities:draw()
     
 end

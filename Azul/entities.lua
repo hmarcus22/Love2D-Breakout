@@ -2,26 +2,14 @@ local state = require('state')
 local player = require('entities/player')
 local tile = require('entities/tile')
 local gameboard = require "entities/gameboard"
-local bucket = require "entities/bucket"
+local Bucket = require "entities/bucket"
+local Object = require "classic"
 
 local entities = {
-    bucket(1),
-    bucket(2),
-    bucket(3)
+    Bucket(1),
+    Bucket(2),
+    Bucket(3)
 }
-
-    --Add tiles
-    local tileType = 1
-    local x_pos = 20
-    for number = 0, state.nrTiles do
-        if tileType <= 5 then
-            table.insert(entities, tile(tileType, x_pos, 20))
-            tileType = tileType + 1
-            x_pos = x_pos + 35
-        else
-            tileType = 1
-        end
-    end
 
     --Add players
     
@@ -30,31 +18,45 @@ local entities = {
         table.insert(entities, player("name", number, board))
     end
 
-    -- Move tiles to buckets
-    function entities:moveTileToBucket()
+    --Add tiles
 
-        local nrBuckets = 3
-        local tmpBucket = {}
-        local count = 1
-        for _, cBucket in ipairs(self) do
-            tmpBucket = nil
-            if bucket.type == 'bucket' then
-                for i, tile in ipairs(self) do
+    local tileType = 1
+    local x_pos = 20
+    for number = 1, 100 do
 
-                    if count <=5 then
-                        if tile.type == 'tile' then
-                            cBucket:addTiles(tile)
-                            table.remove(self, i)
-                            
-                            count = count + 1
-                        end
-                    end
-
-                end
-            end
+        entities[#entities +1] = tile(tileType, x_pos, 20)
+        
+        if tileType >= 5 then
             
+            tileType = 1
+            
+        else
+            tileType = tileType + 1
+            x_pos = x_pos + 35  
+        end
+        
+    end
+
+    -- for _, entity in ipairs(entities) do
+    --     if entity:is(tile) then
+    --         print('tile of type: ' .. entity.tType)
+    --     end
+    -- end
+
+    for _, entity in ipairs(entities) do
+        if entity.draw then print(entity.tType) end
+    end
+
+    function entities:draw()
+        for _, entity in ipairs(self) do
+            if entity.draw then entity:draw() end
         end
     end
+
+    -- Remember
+
+    -- table.insert(t, table.remove(t, key))
+
 
 return entities
 
