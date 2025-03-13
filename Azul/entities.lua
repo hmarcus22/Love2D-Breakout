@@ -61,8 +61,9 @@ local entities = {}
             print(key, type(entity), entity:is(Tile))
             
             if entity:is(Tile) and (not entity.inPlay) then
-            entity.setBucket(1)
-            entity.setPos(x, y)
+            entity.bucket = 1
+            entity.x, entity.y = x, y
+            entity.inPlay = true
             x, y = x + 10, y + 10
             print(entity.tType)
             end
