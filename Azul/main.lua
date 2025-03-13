@@ -7,9 +7,7 @@ local Object = require "classic"
 
 
 function love.load()
-
-    
-   
+  
 end
 
 function love.keyreleased(key, code)
