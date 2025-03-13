@@ -7,14 +7,13 @@ local Bucket = Object:extend()
     function Bucket:new(id)
 
         self.id = id
-        
         self.type = 'bucket'
         
     end
 
     function Bucket:addTiles(tile)
         
-            table.insert(Bucket.tileBucket, unpack(tile))
+            table.insert(Bucket.tileBucket, tile)
         
     end
 

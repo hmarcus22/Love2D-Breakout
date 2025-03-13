@@ -7,6 +7,7 @@ local Object = require "classic"
 
 
 function love.load()
+    entities:fillBuckets()
   
 end
 

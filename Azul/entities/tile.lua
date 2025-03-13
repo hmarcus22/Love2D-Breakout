@@ -13,6 +13,8 @@ local Tile = Object:extend()
         self.shape = love.physics.newRectangleShape(self.size, self.size)
         self.fixture = love.physics.newFixture(self.body, self.shape, 1)
         self.hasDraw = true
+        self.bucket = 0
+        self.inPlay = false
     end
 
     function Tile:pType()
@@ -32,6 +34,17 @@ local Tile = Object:extend()
         love.graphics.print(self.tType, self.x, self.y)
     end
   
-  
+    function Tile:update(dt)
 
+    end
+
+    function Tile:setBucket(nr)
+        self.bucket = (nr or 1)
+        if self.bucket > 0 then self.inPlay = not self.inPlay end
+    end
+
+    function Tile:setPos(x, y)
+        self.x = x
+        self.y = y
+    end
 return Tile

@@ -43,19 +43,34 @@ local entities = {}
         table.insert(entities, bucket)
     end
 
-    local function entities:draw()
+    function entities:draw()
         for _, entity in pairs(entities) do
-            if type(entity) == "table" and entity.hasDraw then 
+            if type(entity) == "table" and entity.hasDraw and entity.inPlay then 
                 
                 entity:render()
             end
         end
     end
 
-    local function entities:moveTileToBucket()
-    
-        --Do stuff
+    function entities:fillBuckets()
+        local x, y = 10, 10
+        for number = 1, 5 do
+            local key = math.random(4, 104)
+            
+            local entity = entities[key]
+            print(key, type(entity), entity:is(Tile))
+            
+            if entity:is(Tile) and (not entity.inPlay) then
+            entity.setBucket(1)
+            entity.setPos(x, y)
+            x, y = x + 10, y + 10
+            print(entity.tType)
+            end
+        end
+
+
     end
+ 
 
 
     -- Remember
