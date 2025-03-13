@@ -2,6 +2,7 @@ return {
     nrPlayers = 4,
     nrTiles = 100,
     nrBuckets = 4,
+    seed = os.time(),
     palette = {
         {0, 0, 1, 1}, -- Blue
         {1, 1, 0, 1}, -- Yellow

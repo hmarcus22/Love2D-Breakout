@@ -46,5 +46,7 @@ local Tile = Object:extend()
     function Tile:setPos(x, y)
         self.x = x
         self.y = y
+        self.body:setX(x)
+        self.body:setY(y)
     end
 return Tile
