@@ -5,6 +5,7 @@ local world = require "world"
 local Tile = Object:extend()  
 
     function Tile:new(type, x, y)
+        
         self.tType = (type or 5)
         self.size = 30
         self.x = x
@@ -38,15 +39,19 @@ local Tile = Object:extend()
 
     end
 
-    function Tile:setBucket(nr)
-        self.bucket = (nr or 1)
+    function Tile:setBucket(nr, x, y)
+        self.bucket = (nr)
         if self.bucket > 0 then self.inPlay = not self.inPlay end
+        
+        local newX = x 
+        local newY = y 
+
+        self.body:setPosition(newX, newY)
+        self.x = newX
+        self.y = newY
     end
 
-    function Tile:setPos(x, y)
-        self.x = x
-        self.y = y
-        self.body:setX(x)
-        self.body:setY(y)
-    end
+
+
+    
 return Tile

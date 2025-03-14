@@ -4,9 +4,6 @@ local Object = require "classic"
 local state = require "state"
 
 
-
-
-
 function love.load()
     math.randomseed(state.seed)
     entities:fillBuckets()

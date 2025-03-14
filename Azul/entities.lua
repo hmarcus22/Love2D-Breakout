@@ -53,26 +53,18 @@ local entities = {}
     end
         
     function entities:fillBuckets()
-        local x, y = 10, 10
-        for x = 1, 5 do
+        local x, y = 50, 20
+        for nr = 1, 5 do
             for number = 1, 5 do
-                
                 local key = math.random(4, 104)
-                local entity = entities[key]
-                print('Key is: ' .. key, 'Type is: ' .. type(entity), entity:is(Tile))
-                
+                local entity = self[key]
                 if entity:is(Tile) and (not entity.inPlay) then
-                entity.bucket = 1
-                entity.x, entity.y = x, y
-                entity.body:setX(x)
-                entity.body:setY(y)
-                entity.inPlay = true
-                x, y = x + 10, y + 10
-                print(entity.tType)
+                    entity:setBucket(nr, x, y)
+                    x, y = x + 10, y + 10
+                    print(entity.tType)
                 end
             end
-            
-            local x, y = x + 200, 10
+            x, y = x + 50, 20
         end
     end
  
