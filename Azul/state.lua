@@ -3,6 +3,8 @@ return {
     nrTiles = 100,
     nrBuckets = 4,
     seed = os.time(),
+    left_mouse_click = false,
+    right_mouse_click = false,
     palette = {
         {0, 0, 1, 1}, -- Blue
         {1, 1, 0, 1}, -- Yellow

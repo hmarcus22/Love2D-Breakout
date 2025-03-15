@@ -4,6 +4,7 @@ local Object = require "classic"
 local state = require "state"
 
 
+
 function love.load()
     math.randomseed(state.seed)
     entities:fillBuckets()
@@ -13,6 +14,14 @@ end
 function love.keyreleased(key, code)
     input:release(key, code)
     print(key)
+end
+
+function love.mousereleased(mX, mY, pButton)
+    input:mouseRelease(pButton)
+end
+
+function love.mousepressed(mX, mY, rButton)
+    input:mousePress(rButton)
 end
 
 

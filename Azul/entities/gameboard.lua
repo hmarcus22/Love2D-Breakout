@@ -9,12 +9,12 @@ local gameboard = Object:extend()
         self.minusRow = {}
     end
 
-    function gameboard:insertTileToTileInput(tileSet, row)
+    function gameboard:addTiles(tileSet, row)
 
 
     end
 
-    function gameboard:resolveTiles()
+    function gameboard:resolveBoard()
 
         
     end
