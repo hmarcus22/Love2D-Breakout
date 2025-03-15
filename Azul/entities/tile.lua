@@ -19,6 +19,7 @@ local Tile = Object:extend()
         self.inPlay = false
         self.contact = false
         self.drag = false
+        self.texture = love.graphics.newImage('img/0' .. self.tType .. '.png')
 
     end
 
@@ -27,8 +28,20 @@ local Tile = Object:extend()
     end
 
     function Tile:render()
+        
+        local self_x, self_y = self.body:getWorldCenter()
         love.graphics.setColor(state.palette[self.tType])
-        love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
+        love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
+        love.graphics.draw(
+            self.texture, 
+            self_x, 
+            self_y, 
+            0, -- Rotation
+            .2, -- Scale factor x
+            .2, -- Scale factor y
+            self.texture:getWidth()/2, 
+            self.texture:getHeight()/2
+        )
         
         -- Use a different color for the text based on the tile type
         if self.tType == 5 or self.tType == 2 then
@@ -36,6 +49,8 @@ local Tile = Object:extend()
         else
             love.graphics.setColor(state.palette[5])  -- White
         end
+        
+        --Debug stuff
         love.graphics.print(self.tType, self.x -5, self.y)
         love.graphics.print(tostring(self.contact), self.x +5, self.y)
     end

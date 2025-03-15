@@ -9,7 +9,6 @@ local world = require "world"
 function love.load()
     math.randomseed(state.seed)
     entities:fillBuckets()
-  
 end
 
 function love.keyreleased(key, code)
@@ -35,5 +34,4 @@ end
 function love.draw()
     love.graphics.setBackgroundColor(.5, .5, .5, 1)
     entities:draw()
-    
 end

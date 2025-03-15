@@ -49,16 +49,19 @@ local entities = {
     function entities:fillBuckets()
         local x, y = 50, 20
         for nr = 1, 5 do
-            for number = 1, 5 do
+            local number = 1
+            while number <= 5 do
                 local key = math.random(4, 104)
                 local entity = self[key]
                 if entity:is(Tile) and (not entity.inPlay) then
                     entity:setBucket(nr, x, y)
                     x, y = x + 32, y + 32
                     print(entity.tType)
+                    number = number + 1
                 end
+                
             end
-            x, y = x + 50, 20
+            x, y = x + 20, 20
         end
     end
 
