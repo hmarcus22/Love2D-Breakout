@@ -4,10 +4,13 @@ local Tile = require "entities/tile"
 local gameboard = require "entities/gameboard"
 local Bucket = require "entities/bucket"
 local Object = require "classic"
+local Mouse = require "entities/mouse"
 
 
 
-local entities = {}
+local entities = {
+    Mouse()
+}
 
     
 
@@ -43,6 +46,22 @@ local entities = {}
         table.insert(entities, bucket)
     end
 
+    function entities:fillBuckets()
+        local x, y = 50, 20
+        for nr = 1, 5 do
+            for number = 1, 5 do
+                local key = math.random(4, 104)
+                local entity = self[key]
+                if entity:is(Tile) and (not entity.inPlay) then
+                    entity:setBucket(nr, x, y)
+                    x, y = x + 32, y + 32
+                    print(entity.tType)
+                end
+            end
+            x, y = x + 50, 20
+        end
+    end
+
     function entities:draw()
         for _, entity in pairs(entities) do
             if type(entity) == "table" and entity.hasDraw and entity.inPlay then 
@@ -52,21 +71,16 @@ local entities = {}
         end
     end
         
-    function entities:fillBuckets()
-        local x, y = 50, 20
-        for nr = 1, 5 do
-            for number = 1, 5 do
-                local key = math.random(4, 104)
-                local entity = self[key]
-                if entity:is(Tile) and (not entity.inPlay) then
-                    entity:setBucket(nr, x, y)
-                    x, y = x + 10, y + 10
-                    print(entity.tType)
-                end
+   function entities:update(dt)
+
+        for _, entity in pairs(entities) do
+            if type(entity) == "table" and entity.update  then
+                
+                entity:update(dt)
             end
-            x, y = x + 50, 20
         end
-    end
+
+   end
  
 
 

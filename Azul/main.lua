@@ -2,6 +2,7 @@ local entities = require('entities')
 local input = require "input"
 local Object = require "classic"
 local state = require "state"
+local world = require "world"
 
 
 
@@ -26,7 +27,9 @@ end
 
 
 function love.update(dt)
-
+    love.graphics.setBackgroundColor(.5, .5, .5, 1)
+    entities:update(dt)
+    world:update(dt)
 end
 
 function love.draw()

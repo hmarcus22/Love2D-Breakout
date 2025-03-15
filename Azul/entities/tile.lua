@@ -10,12 +10,16 @@ local Tile = Object:extend()
         self.size = 30
         self.x = x
         self.y = (y or 20)
-        self.body = love.physics.newBody(world, x, y, 'dynamic')       
+        self.body = love.physics.newBody(world, x, y, 'static')       
         self.shape = love.physics.newRectangleShape(self.size, self.size)
         self.fixture = love.physics.newFixture(self.body, self.shape, 1)
+        self.fixture:setUserData(self)
         self.hasDraw = true
         self.bucket = 0
         self.inPlay = false
+        self.contact = false
+        self.drag = false
+
     end
 
     function Tile:pType()
@@ -32,10 +36,31 @@ local Tile = Object:extend()
         else
             love.graphics.setColor(state.palette[5])  -- White
         end
-        love.graphics.print(self.tType, self.x, self.y)
+        love.graphics.print(self.tType, self.x -5, self.y)
+        love.graphics.print(tostring(self.contact), self.x +5, self.y)
     end
   
     function Tile:update(dt)
+        if state.left_mouse_click then
+            if self.fixture:testPoint(love.mouse.getPosition()) then
+                self.drag = true
+                -- self.body:setMass(0,0,0,0)
+                self.contact = true
+            end
+        end
+        if not state.left_mouse_click then
+            self.drag = false
+            -- self.body:setLinearVelocity(0,0)
+            self.contact = false
+        end
+        if self.drag then
+            
+            local x, y = love.mouse:getPosition()
+            self.body:setPosition(x, y)
+            self.x = x
+            self.y = y
+            
+        end
 
     end
 
@@ -51,7 +76,15 @@ local Tile = Object:extend()
         self.y = newY
     end
 
+    -- function Tile:post_contact()
 
+    --     self.contact = true
+    -- end
+
+    -- function Tile:end_contact()
+
+    --     self.contact = false
+    -- end
 
     
 return Tile
