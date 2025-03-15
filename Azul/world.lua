@@ -22,10 +22,10 @@ local pre_solve_callback = function(fixture_a, fixture_b, contact)
 end
 
 local post_solve_callback = function(fixture_a, fixture_b, contact)
-    local entity_a = fixture_a:getUserData()
-    local entity_b = fixture_b:getUserData()
-    if entity_a.post_contact then entity_a:post_contact() end
-    if entity_b.post_contact then entity_b:post_contact() end
+    -- local entity_a = fixture_a:getUserData()
+    -- local entity_b = fixture_b:getUserData()
+    -- if entity_a.post_contact then entity_a:post_contact() end
+    -- if entity_b.post_contact then entity_b:post_contact() end
 end
 
 world:setCallbacks(

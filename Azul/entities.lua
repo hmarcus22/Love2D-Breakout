@@ -1,7 +1,7 @@
 local state = require('state')
 local player = require('entities/player')
 local Tile = require "entities/tile"
-local gameboard = require "entities/gameboard"
+local Gameboard = require "entities/gameboard"
 local Bucket = require "entities/bucket"
 local Object = require "classic"
 local Mouse = require "entities/mouse"
@@ -9,7 +9,8 @@ local Mouse = require "entities/mouse"
 
 
 local entities = {
-    Mouse()
+    Mouse(),
+    Gameboard()
 }
 
     
@@ -35,10 +36,10 @@ local entities = {
 
     --Add players
     
-    for number = 1, state.nrPlayers do
-        local board = gameboard()
-        table.insert(entities, player("name", number, board))
-    end
+    -- for number = 1, state.nrPlayers do
+    --     local board = Gameboard()
+    --     table.insert(entities, player("name", number, board))
+    -- end
 
     -- Add buckets
     for number = 1, state.nrBuckets do
@@ -67,9 +68,9 @@ local entities = {
 
     function entities:draw()
         for _, entity in pairs(entities) do
-            if type(entity) == "table" and entity.hasDraw and entity.inPlay then 
+            if type(entity) == "table" and entity.draw then 
                 
-                entity:render()
+                entity:draw()
             end
         end
     end
