@@ -1,11 +1,12 @@
-local Object = require "classic"
+-- local Object = require "classic"
 local state = require "state"
 local world = require "world"
+local Entity = require "entities/entity"
 
-local Tile = Object:extend()  
+local Tile = Entity:extend()  
 
     function Tile:new(type, x, y)
-        
+        Tile.super.new(self, id)
         self.tType = (type or 5)
         self.size = 30
         self.x = x
@@ -23,6 +24,7 @@ local Tile = Object:extend()
         self.contact = false
         self.drag = false
         self.texture = love.graphics.newImage('img/0' .. self.tType .. '.png')
+        
 
     end
 
@@ -64,13 +66,13 @@ local Tile = Object:extend()
             if self.fixture:testPoint(love.mouse.getPosition()) then
                 self.drag = true
                 -- self.body:setMass(0,0,0,0)
-                self.contact = true
+                -- self.contact = true
             end
         end
         if not state.left_mouse_click then
             self.drag = false
             -- self.body:setLinearVelocity(0,0)
-            self.contact = false
+            -- self.contact = false
         end
         if self.drag then
             
@@ -83,16 +85,16 @@ local Tile = Object:extend()
 
     end
 
-    function Tile:setBucket(nr, x, y)
-        self.bucket = (nr)
-        if self.bucket > 0 then self.inPlay = not self.inPlay end
+    function Tile:setInplay()
         
-        local newX = x 
-        local newY = y 
+        self.inPlay = not self.inPlay
+        
+        -- local newX = x 
+        -- local newY = y 
 
-        self.body:setPosition(newX, newY)
-        self.x = newX
-        self.y = newY
+        -- self.body:setPosition(newX, newY)
+        -- self.x = newX
+        -- self.y = newY
     end
 
     -- function Tile:post_contact()

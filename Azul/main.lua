@@ -1,4 +1,4 @@
-local entities = require('entities')
+local game = require('game')
 local input = require "input"
 local Object = require "classic"
 local state = require "state"
@@ -8,7 +8,7 @@ local world = require "world"
 
 function love.load()
     math.randomseed(state.seed)
-    entities:fillBuckets()
+    -- entities:fillBuckets()
 end
 
 function love.keyreleased(key, code)
@@ -27,11 +27,11 @@ end
 
 function love.update(dt)
     love.graphics.setBackgroundColor(.5, .5, .5, 1)
-    entities:update(dt)
+    -- entities:update(dt)
     world:update(dt)
 end
 
 function love.draw()
     love.graphics.setBackgroundColor(.5, .5, .5, 1)
-    entities:draw()
+    game:drawAll()
 end

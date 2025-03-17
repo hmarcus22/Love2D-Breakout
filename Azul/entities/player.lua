@@ -1,16 +1,16 @@
 local Object = require "classic"
 
-local player = Object:extend()
+local Player = Object:extend()
 
-function player:new(name, id, gameboard)
+function Player:new(name, id, gameboard)
     
     self.id = id
     self.name = (name or "n/a")
     self.gameboard = gameboard
 end
 
-function player:pNumber()
+function Player:pNumber()
     print(self.id)
 end
 
-return player
+return Player
