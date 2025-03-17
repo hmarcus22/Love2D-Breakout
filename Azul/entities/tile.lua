@@ -34,6 +34,7 @@ local Tile = Entity:extend()
 
     function Tile:draw()
         if self.inPlay then
+            print('Drawn tile with ID: ' .. self.id)
             local self_x, self_y = self.body:getWorldCenter()
             love.graphics.setColor(state.palette[self.tType])
             love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))

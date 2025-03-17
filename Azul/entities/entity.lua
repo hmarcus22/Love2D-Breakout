@@ -19,14 +19,15 @@ function Entity:setOwner(owner)
     --     end
     -- end
     -- Remove ownership from previous owner if exists
-    print(tostring('New owner ID: ' .. owner.id))
+    print(tostring('New owner ID: ' .. owner.id) .. ' ' .. tostring(owner:is(Entity)))
     print(tostring('Old owner ID: ' .. self.id))
     if self.owner then
         self.owner:releaseEntity(self.id)
     end
     
     self.owner = owner
-    if owner then
+
+    if owner and owner ~= self then
         owner:addOwnedEntity(self)
     end
     
@@ -34,8 +35,10 @@ function Entity:setOwner(owner)
 end
 
 function Entity:addOwnedEntity(entity)
-    entity:setOwner(self)
-    self.ownedEntities[entity.id] = entity
+    -- Only add entity if it's not already owned by someone else
+    if entity.owner == nil or entity.owner == self then
+        self.ownedEntities[entity.id] = entity
+    end
 end
 
 function Entity:releaseEntity(id)
@@ -43,6 +46,14 @@ function Entity:releaseEntity(id)
             self.ownedEntities[id].owner = nil
             self.ownedEntities[id] = nil
         end
+end
+
+function Entity:getCount()
+    local count = 0
+    for _ in pairs(self.ownedEntities) do
+        count = count + 1
+    end
+    return count
 end
 
 function Entity:destroy()
