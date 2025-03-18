@@ -60,6 +60,11 @@ function Entity:printOwnedEntities()
     end
 end
 
+function Entity:printOwner()
+    print('Owner is: ' .. tostring(self.owner))
+    
+end
+
 function Entity:destroy()
     -- Release all owned entities
     for id, _ in pairs(self.ownedEntities) do

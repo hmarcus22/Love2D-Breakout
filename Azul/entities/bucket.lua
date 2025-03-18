@@ -20,62 +20,43 @@ local Bucket = Entity:extend()
         self.fixture:isSensor(true)
         self.fixture:setUserData(self)
         self.contact = false
+        self.ox = self.body:getX() - (self.width / 2 - 5)
+        self.oy = self.body:getY() - (self.height / 2 - 5)
         
     end
-
-    -- function Bucket:addTile(ctile)
-    --     print("Starting addTile:", type(ctile))
-    --     if not ctile then
-    --         print("ERROR: ctile became nil inside addTile!")
-    --         return
-    --     end
-    --     print("Before insertion:", type(ctile))
-    --     table.insert(self.tileBucket, ctile)
-    --     print("After insertion:", type(ctile))
-    --     -- if #self.tileBucket == 5 then
-    --         self.isNotFull = false
-    --     -- end
-    -- end
-   
-   
-    -- function Bucket:addTile(ctile)
-
-        
-    --     print(type(ctile))
-        
-    --     table.insert(self.tileBucket, ctile)
-        
-    --     if #self.tileBucket == 5 then
-    --         self.isNotFull = false
-    --     end
-    
-        
-    -- end
-
-    -- function Bucket:isNotFull()
-        
-    --     return self.isNotFull
-    -- end
 
     function Bucket:draw()
 
         love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
         love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
         love.graphics.print('Bucket :' .. self.nr, self.x - (self.width / 2 - 5), self.y - (self.height / 2 - 5))
+    end
+
+    -- function Bucket:begin_contact()
+    --     -- print('contact!')
+    --     self.contact = true
+    -- end
+
+    -- function Bucket:end_contact()
         
-        for _, tile in ipairs(self.tileBucket) do
-            if tile.draw then tile:draw() end
+    --     self.contact = false
+    -- end
+
+    function Bucket:setOwnedEntityPos()
+        if self.ownedEntities then
+       
+            local x, y = self.ox, self.oy
+            print ('Coordinates: ' .. x, y)
+            for _, entity in pairs(self.ownedEntities) do
+                if entity:is(Tile) then
+                    print('Tile is in play when updating coordinates: ' .. tostring(entity.InPlay))
+                    entity:setPos(x, y)
+                    x = x + 35
+                    
+                end
+            end
         end
-    end
 
-    function Bucket:begin_contact()
-        print('contact!')
-        self.contact = true
-    end
-
-    function Bucket:end_contact()
-        
-        self.contact = false
     end
 
     return Bucket

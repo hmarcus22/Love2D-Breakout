@@ -11,7 +11,7 @@ local Tile = Entity:extend()
         self.size = 30
         self.x = x
         self.y = (y or 20)
-        self.body = love.physics.newBody(world, self.x, self.y, 'dynamic')
+        self.body = love.physics.newBody(world, self.x, self.y, 'static')
         self.body:setLinearVelocity(0,0)
         self.body:setFixedRotation(true)
         self.body:setMassData(0,0,0,0)       
@@ -27,6 +27,11 @@ local Tile = Entity:extend()
 
     end
 
+    function Tile:setPos(x, y)
+        self.body:setPosition(x, y)
+        
+    end
+
     function Tile:draw()
         if self.inPlay then
             local self_x, self_y = self.body:getWorldCenter()
@@ -36,7 +41,7 @@ local Tile = Entity:extend()
                 self.texture, 
                 self_x, 
                 self_y, 
-                1,      -- Rotation
+                0,      -- Rotation
                 .2,     -- Scale factor x
                 .2,     -- Scale factor y
                 self.texture:getWidth()/2, 
@@ -80,7 +85,7 @@ local Tile = Entity:extend()
 
     function Tile:setInplay()
                 
-        self.inPlay = not self.inPlay
+        self.inPlay = true
     end
 
     function Tile:createDestroy()
@@ -93,6 +98,8 @@ local Tile = Entity:extend()
             end
         end
     end
+
+  
 
     
 return Tile

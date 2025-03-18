@@ -43,25 +43,52 @@ for number = 1, 4 do
 end
 
 
-print(game:getCount())
-game:printOwnedEntities()
 
 function func.fillBuckets()
-    local count = #buckets
-    for i = 1, count do
-        local 
-        local tile = func.getRandomTileKey()
-        tiles[tile]:setOwner(buckets[i])
-    end
-
     
+    for _, bucket in pairs(buckets) do
+
+        local rndKey = func.getRandomTileKey()
+        for key, tile in pairs(tiles) do
+            if key == rndKey then
+                tile:printOwner()
+                tile:setOwner(bucket)
+                tile:setInplay()
+                tile:printOwner()
+                print('Tile is in play: ' ..tostring(tile.InPlay))
+                bucket:setOwnedEntityPos()
+            
+            end
+        end
+    end
 end
 
 function func.getRandomTileKey()
     local firstKey, lastKey = 1, #tiles
-    local key = math.random(firstKey, lastKey)
-    return key 
-
+    local con = true
+    local key
+    while con do
+         key = math.random(firstKey, lastKey)
+         print(tiles[key].owner:is(Entity))
+        if tiles[key].owner:is(Entity) then
+            
+            con = false
+        else
+            
+        end
+    end
+        return key
 end
+
+
+    func.fillBuckets()
+ 
+
+
+
+
+-- for _, bucket in ipairs(buckets) do
+--     bucket:printOwnedEntities()
+-- end
 
 return game
