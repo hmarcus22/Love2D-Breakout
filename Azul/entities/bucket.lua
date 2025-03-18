@@ -1,12 +1,12 @@
-local Object = require "classic"
+local Entity = require "entities/entity"
 
-local Bucket = Object:extend()
+local Bucket = Entity:extend()
 
     
 
-    function Bucket:new(id, x_pos)
-
-        self.id = id
+    function Bucket:new(nr, x_pos)
+        Bucket.super.new(self, id)
+        self.nr = nr
         self.type = 'bucket'
         self.tileBucket = {}
         self.isNotFull = true

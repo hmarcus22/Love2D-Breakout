@@ -34,7 +34,7 @@ local Tile = Entity:extend()
 
     function Tile:draw()
         if self.inPlay then
-            print('Drawn tile with ID: ' .. self.id)
+            -- print('Drawn tile with ID: ' .. self.id)
             local self_x, self_y = self.body:getWorldCenter()
             love.graphics.setColor(state.palette[self.tType])
             love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
@@ -57,8 +57,8 @@ local Tile = Entity:extend()
             end
             
             --Debug stuff
-            love.graphics.print(self.tType, self.x -5, self.y)
-            love.graphics.print(tostring(self.contact), self.x +5, self.y)
+            love.graphics.print(self.tType, self.body:getX() -5, self.body:getY())
+            love.graphics.print(tostring(self.contact), self.body:getX() +5, self.body:getY())
         end
     end
   
