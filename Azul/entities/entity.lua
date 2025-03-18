@@ -13,14 +13,10 @@ end
 
 function Entity:setOwner(owner)
     
-    -- for _, component in pairs(self.components) do
-    --     if component.onOwnershipChange then
-    --         component:onOwnershipChange(owner)
-    --     end
-    -- end
+
     -- Remove ownership from previous owner if exists
-    print(tostring('New owner ID: ' .. owner.id) .. ' ' .. tostring(owner:is(Entity)))
-    print(tostring('Old owner ID: ' .. self.id))
+    -- print(tostring('New owner ID: ' .. owner.id) .. ' ' .. tostring(owner:is(Entity)))
+    -- print(tostring('Old owner ID: ' .. self.id))
     if self.owner then
         self.owner:releaseEntity(self.id)
     end
@@ -56,6 +52,14 @@ function Entity:getCount()
     return count
 end
 
+function Entity:printOwnedEntities()
+    print('Entity: ' .. self.id .. ' owns:')
+    for key, entity in pairs(self.ownedEntities) do
+        print('Entity: ' .. self.id .. ' owns:')
+        print('Key: '.. key .. ' ' .. tostring((entity)))
+    end
+end
+
 function Entity:destroy()
     -- Release all owned entities
     for id, _ in pairs(self.ownedEntities) do
@@ -82,6 +86,24 @@ function Entity:drawAll()
     if self.ownedEntities then
         for _, ownedEntity in pairs(self.ownedEntities) do
             ownedEntity:drawAll()
+        end
+    end
+end
+
+function Entity:update(dt)
+    -- Default draw behavior - override in specific entity types
+    -- error("Entity must implement draw method")
+    -- print(tostring(self) .. ' Entity has no draw method')
+end
+
+function Entity:updateAll(dt)
+    -- Draw this entity first
+    self:update()
+    
+    -- Then draw all owned entities
+    if self.ownedEntities then
+        for _, ownedEntity in pairs(self.ownedEntities) do
+            ownedEntity:updateAll()
         end
     end
 end

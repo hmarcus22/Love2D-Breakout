@@ -6,7 +6,7 @@ local Entity = require "entities/entity"
 local Tile = Entity:extend()  
 
     function Tile:new(type, x, y)
-        Tile.super.new(self, id)
+        Tile.super.new(self)
         self.tType = (type or 5)
         self.size = 30
         self.x = x
@@ -16,8 +16,7 @@ local Tile = Entity:extend()
         self.body:setFixedRotation(true)
         self.body:setMassData(0,0,0,0)       
         self.shape = love.physics.newRectangleShape(self.size, self.size)
-        self.fixture = love.physics.newFixture(self.body, self.shape, 1)
-        self.fixture:setUserData(self)
+        self.fixture = nil
         self.hasDraw = true
         self.bucket = 0
         self.inPlay = false
@@ -28,13 +27,8 @@ local Tile = Entity:extend()
 
     end
 
-    function Tile:pType()
-        print(self.tType)
-    end
-
     function Tile:draw()
         if self.inPlay then
-            -- print('Drawn tile with ID: ' .. self.id)
             local self_x, self_y = self.body:getWorldCenter()
             love.graphics.setColor(state.palette[self.tType])
             love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
@@ -42,9 +36,9 @@ local Tile = Entity:extend()
                 self.texture, 
                 self_x, 
                 self_y, 
-                1, -- Rotation
-                .2, -- Scale factor x
-                .2, -- Scale factor y
+                1,      -- Rotation
+                .2,     -- Scale factor x
+                .2,     -- Scale factor y
                 self.texture:getWidth()/2, 
                 self.texture:getHeight()/2
             )
@@ -63,17 +57,16 @@ local Tile = Entity:extend()
     end
   
     function Tile:update(dt)
+        
+        self:createDestroy()
+
         if state.left_mouse_click then
             if self.fixture:testPoint(love.mouse.getPosition()) then
                 self.drag = true
-                -- self.body:setMass(0,0,0,0)
-                -- self.contact = true
             end
         end
         if not state.left_mouse_click then
             self.drag = false
-            -- self.body:setLinearVelocity(0,0)
-            -- self.contact = false
         end
         if self.drag then
             
@@ -81,32 +74,25 @@ local Tile = Entity:extend()
             self.body:setPosition(x, y)
             self.x = x
             self.y = y
-            
         end
 
     end
 
     function Tile:setInplay()
-        
+                
         self.inPlay = not self.inPlay
-        
-        -- local newX = x 
-        -- local newY = y 
-
-        -- self.body:setPosition(newX, newY)
-        -- self.x = newX
-        -- self.y = newY
     end
 
-    -- function Tile:post_contact()
-
-    --     self.contact = true
-    -- end
-
-    -- function Tile:end_contact()
-
-    --     self.contact = false
-    -- end
+    function Tile:createDestroy()
+        if self.inPlay then
+            self.fixture = love.physics.newFixture(self.body, self.shape, 1)
+            self.fixture:setUserData(self)
+        elseif not self.inPlay then
+            if self.fixture then            
+                self.fixture:destroy()
+            end
+        end
+    end
 
     
 return Tile
