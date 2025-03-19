@@ -22,7 +22,7 @@ local Tile = Entity:extend()
         self.inPlay = false
         self.contact = false
         self.drag = false
-        self.texture = love.graphics.newImage('img/0' .. self.tType .. '.png')
+        self.texture = love.graphics.newImage('img/gem.png')
         
 
     end
@@ -36,14 +36,14 @@ local Tile = Entity:extend()
         if self.inPlay then
             local self_x, self_y = self.body:getWorldCenter()
             love.graphics.setColor(state.palette[self.tType])
-            love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
+            -- love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
             love.graphics.draw(
                 self.texture, 
                 self_x, 
                 self_y, 
                 0,      -- Rotation
-                .2,     -- Scale factor x
-                .2,     -- Scale factor y
+                .5,     -- Scale factor x
+                .5,     -- Scale factor y
                 self.texture:getWidth()/2, 
                 self.texture:getHeight()/2
             )
@@ -56,8 +56,8 @@ local Tile = Entity:extend()
             end
             
             --Debug stuff
-            love.graphics.print(self.tType, self.body:getX() -5, self.body:getY())
-            love.graphics.print(tostring(self.contact), self.body:getX() +5, self.body:getY())
+            -- love.graphics.print(self.tType, self.body:getX() -5, self.body:getY())
+            love.graphics.print('O: ' .. tostring(self.owner.nr), self.body:getX() - 20, self.body:getY())
         end
     end
   
@@ -76,6 +76,7 @@ local Tile = Entity:extend()
         if self.drag then
             
             local x, y = love.mouse:getPosition()
+            x = x +200
             self.body:setPosition(x, y)
             self.x = x
             self.y = y

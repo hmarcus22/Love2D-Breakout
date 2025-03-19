@@ -32,15 +32,19 @@ local Bucket = Entity:extend()
         love.graphics.print('Bucket :' .. self.nr, self.x - (self.width / 2 - 5), self.y - (self.height / 2 - 5))
     end
 
-    -- function Bucket:begin_contact()
-    --     -- print('contact!')
-    --     self.contact = true
-    -- end
+    function Bucket:update(dt)
+        local count = 1
+        for _, tile in pairs(self.ownedEntities) do
+        local x = self.body:getX() + (count * 15) % self.width
+        local y = self.body:getY() + math.floor((count-1)/2) * 35
+            if tile:is(Tile) then
+                tile:setPos(x, y)
+                count = count +1
+            end
+        end
 
-    -- function Bucket:end_contact()
-        
-    --     self.contact = false
-    -- end
+    end
+
 
     function Bucket:setOwnedEntityPos()
         if self.ownedEntities then
