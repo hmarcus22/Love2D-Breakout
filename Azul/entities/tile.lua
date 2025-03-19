@@ -54,11 +54,11 @@ local Tile = Entity:extend()
             
             
             -- Use a different color for the text based on the tile type
-            if self.tType == 5 then
-                love.graphics.setColor(state.palette[4])  -- Black
-            else
+            -- if self.tType == 5 then
+            --     love.graphics.setColor(state.palette[4])  -- Black
+            -- else
                 love.graphics.setColor(state.palette[5])  -- White
-            end
+            -- end
             
             --Debug stuff
             -- love.graphics.print(self.tType, self.body:getX() -5, self.body:getY())

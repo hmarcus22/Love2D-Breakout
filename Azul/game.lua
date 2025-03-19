@@ -16,7 +16,7 @@ local buckets = {}
 
 
 
--- Create tiles and assign to game
+-- Create tiles
 local tile_type = 1
 for number = 1, 100 do
     
@@ -32,9 +32,9 @@ for number = 1, 100 do
 end
 
 -- Create buckets and assign to game
-local x_pos = 135
-local width = (love.graphics.getWidth() -20 ) / 4
-for number = 1, 4 do
+local x_pos = 100
+local width = (love.graphics.getWidth() -20 ) / state.nrBuckets
+for number = 1, state.nrBuckets do
     
     local bucket = Bucket(number, x_pos)
     table.insert(buckets, bucket)
@@ -79,22 +79,19 @@ function func.fillBuckets()
     end
 end
 
--- function func.checkBuckets()
---     local x, y = 50, 50
---     for _, bucket in pairs(buckets) do
---         for _, tile in pairs(bucket.ownedEntities) do
---             print('Bucket nr: ' .. bucket.nr .. ' Owns ' .. #bucket.ownedEntities .. ' entities!')
---             print('Bucket nr ' .. bucket.nr .. ' Is assigned tile with id: ' .. tile.id)
---             print('Tile has possition: x: ' .. tile.body:getX() .. ' y: ' .. tile.body:getY())
---             print('Is tile: ' .. tostring(tile:is(Tile)))
---             tile:setPos(x, y)
---             x = x + 70
---             print('Tile has possition: x: ' .. tile.body:getX() .. ' y: ' .. tile.body:getY())
---         end
---     end
--- end
+function func.checkBuckets()
+    local x, y = 50, 50
+    for _, bucket in pairs(buckets) do
+        for _, tile in pairs(bucket.ownedEntities) do
+            local x, y = bucket.body:getPosition()
+            local 
+            print('Bucket pos: ' .. x, y .. ' Tile pos: ' .. )
+          
+        end
+    end
+end
     func.fillBuckets()
-    -- func.checkBuckets()
+    func.checkBuckets()
 
 
 

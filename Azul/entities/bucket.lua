@@ -10,45 +10,40 @@ local Bucket = Entity:extend()
         self.type = 'bucket'
         self.tileBucket = {}
         self.isNotFull = true
-        self.width = (love.graphics.getWidth() - 40) / 4 
-        self.height = self.width
+        self.radius = ((love.graphics.getWidth() - 20) / 9) * 0.5
+        self.height = self.radius
         self.x = x_pos
-        self.y = self.height / 2 + 10
+        self.y = self.height 
         self.body = love.physics.newBody(world, self.x, self.y, 'static')
-        self.shape = love.physics.newRectangleShape(self.width, self.height)
+        self.shape = love.physics.newCircleShape(self.radius / 2)
         self.fixture = love.physics.newFixture(self.body, self.shape, 1)
         self.fixture:isSensor(true)
         self.fixture:setUserData(self)
         self.contact = false
-        self.ox = self.body:getX() - (self.width / 2 - 5)
-        self.oy = self.body:getY() - (self.height / 2 - 5)
-        self.pos = nil
+        self.ox = self.body:getX() - (self.radius / 2)
+        self.oy = self.body:getY() - (self.height / 2)
         
     end
 
     function Bucket:draw()
 
-        love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
+        love.graphics.circle('line', self.x, self.y , self.radius)
         love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
-        love.graphics.print('Bucket :' .. self.nr, self.x - (self.width / 2 - 5), self.y - (self.height / 2 - 5))
+        love.graphics.print('Bucket :' .. self.nr, self.x - (self.radius / 2 - 5), self.y - (self.height / 2 - 5))
     end
 
     function Bucket:calculateTilePosition(tileIndex)
-        -- Calculate perimeter positions clockwise starting from top-left
-        local centerX = self.body:getX()
-        local centerY = self.body:getY()
-        local halfWidth = self.width / 2
-        local halfHeight = self.height / 2
-        local space = 10
-        local tileWidth = 60
-        local step = (tileIndex * tileWidth) - 40
-        print(centerX, centerY)
-        -- Get upper left corner of bucket
-        local oX = centerX - halfWidth
-        local newY = 60
-
-        local x = oX + step + space 
-        local y =  newY + space
+        
+        local index = tileIndex -1
+        local step = 50
+        local gap = 10
+        
+        local x = self.body:getX() - ((step + gap)/2)
+        x = x + ((step + gap) * index)        
+        local y = self.body:getY() - ((step + gap)/2)
+        
+        -- y = y + ((step + gap) * index)
+       
 
         
         return x, y

@@ -1,7 +1,7 @@
 return {
     nrPlayers = 4,
     nrTiles = 100,
-    nrBuckets = 4,
+    nrBuckets = 5,
     seed = os.time(),
     left_mouse_click = false,
     right_mouse_click = false,
