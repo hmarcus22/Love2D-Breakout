@@ -33,13 +33,19 @@ local Bucket = Entity:extend()
     end
 
     function Bucket:update(dt)
-        local count = 1
-        for _, tile in pairs(self.ownedEntities) do
-        local x = self.body:getX() + (count * 15) % self.width
-        local y = self.body:getY() + math.floor((count-1)/2) * 35
-            if tile:is(Tile) then
-                tile:setPos(x, y)
-                count = count +1
+         -- Update positions of all owned tiles
+        if self.ownedEntities then
+            local x = self.body:getX()
+            local y = self.body:getY()
+            local tileCount = 1
+            
+            for _, tile in pairs(self.ownedEntities) do
+                if tile:is(Tile) then
+                    local tileX = x + ((tileCount - 1) * 15) % self.width
+                    local tileY = y + math.floor((tileCount-1)/2) * 35
+                    tile:setPos(tileX, tileY)
+                    tileCount = tileCount + 1
+                end
             end
         end
 
