@@ -22,6 +22,7 @@ local Bucket = Entity:extend()
         self.contact = false
         self.ox = self.body:getX() - (self.width / 2 - 5)
         self.oy = self.body:getY() - (self.height / 2 - 5)
+        self.pos = nil
         
     end
 
@@ -32,39 +33,46 @@ local Bucket = Entity:extend()
         love.graphics.print('Bucket :' .. self.nr, self.x - (self.width / 2 - 5), self.y - (self.height / 2 - 5))
     end
 
-    function Bucket:update(dt)
-         -- Update positions of all owned tiles
-        if self.ownedEntities then
-            local x = self.body:getX()
-            local y = self.body:getY()
-            local tileCount = 1
-            
-            for _, tile in pairs(self.ownedEntities) do
-                if tile:is(Tile) then
-                    local tileX = x + ((tileCount - 1) * 15) % self.width
-                    local tileY = y + math.floor((tileCount-1)/2) * 35
-                    tile:setPos(tileX, tileY)
-                    tileCount = tileCount + 1
-                end
-            end
-        end
+    function Bucket:calculateTilePosition(tileIndex)
+        -- Calculate perimeter positions clockwise starting from top-left
+        local centerX = self.body:getX()
+        local centerY = self.body:getY()
+        local halfWidth = self.width / 2
+        local halfHeight = self.height / 2
+        local space = 10
+        local tileWidth = 60
+        local step = (tileIndex * tileWidth) - 40
+        print(centerX, centerY)
+        -- Get upper left corner of bucket
+        local oX = centerX - halfWidth
+        local newY = 60
 
+        local x = oX + step + space 
+        local y =  newY + space
+
+        
+        return x, y
+    end
+    
+    function Bucket:update(dt)
+        
+        
     end
 
 
-    function Bucket:setOwnedEntityPos()
-        if self.ownedEntities then
-       
-            local x, y = self.ox, self.oy
-            print ('Coordinates: ' .. x, y)
-            for _, entity in pairs(self.ownedEntities) do
-                if entity:is(Tile) then
-                    print('Tile is in play when updating coordinates: ' .. tostring(entity.InPlay))
-                    entity:setPos(x, y)
-                    x = x + 35
-                    
-                end
+    function Bucket:setOwnedEntityPos(id)
+        if self.id == id then
+            print('Bucket nr: ' .. self.nr)
+            local tileIndex = 1
+            for _, tile in pairs(self.ownedEntities) do
+                -- if tile:is(Tile) then
+                    local x, y = self:calculateTilePosition(tileIndex)
+                    print('Updateing bodys owned entities position to x: ' .. x .. ' y: ' .. y)
+                    tile:setPos(x, y, tile.id)
+                    tileIndex = tileIndex + 1
+                -- end
             end
+            
         end
 
     end

@@ -79,8 +79,6 @@ end
 
 function Entity:draw()
     -- Default draw behavior - override in specific entity types
-    -- error("Entity must implement draw method")
-    -- print(tostring(self) .. ' Entity has no draw method')
 end
 
 function Entity:drawAll()
@@ -96,32 +94,20 @@ function Entity:drawAll()
 end
 
 function Entity:update(dt)
-    -- Default draw behavior - override in specific entity types
-    -- error("Entity must implement draw method")
-    -- print(tostring(self) .. ' Entity has no draw method')
+    -- Default update behavior - override in specific entity types
 end
 
 function Entity:updateAll(dt)
     -- Draw this entity first
     self:update()
     
-    -- Then draw all owned entities
+    -- Then update all owned entities
     if self.ownedEntities then
         for _, ownedEntity in pairs(self.ownedEntities) do
             ownedEntity:updateAll()
         end
     end
 end
-
--- function Entity:generateUUID()
---     local template = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
---     return template:gsub("%x", function(c)
---         local v = math.random(0, 15)
---         return string.format("%x", v)
---     end)
--- end
-
-
 
 function Entity:generateUUID()
     math.randomseed(self.seed)
@@ -133,22 +119,3 @@ local template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
 end
 
 return Entity
-
--- Example usage in love.draw():
--- function love.draw()
---     -- Assuming rootEntity contains all top-level entities
---     rootEntity:drawAll()
--- end
-
-
-
--- Example usage
--- local player = Entity.new("player")
--- local weapon = Entity.new("sword")
-
--- -- Player owns weapon
--- player:addOwnedEntity(weapon)
-
--- -- Transfer ownership to another entity
--- local inventory = Entity.new("inventory")
--- weapon:setOwner(inventory) 

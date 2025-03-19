@@ -6,10 +6,10 @@ return {
     left_mouse_click = false,
     right_mouse_click = false,
     palette = {
-        {.4, .4, 1, 1}, -- Blue
-        {1, 1, .4, 1}, -- Yellow
-        {1, .4, .4, 1}, -- Red
-        {.4, .4, .4, 1}, -- Black
-        {1, 1, 1, 1} -- White
+        {.4, .4, 1, .9}, -- Blue
+        {1, 1, .4, .9}, -- Yellow
+        {1, .4, .4, .9}, -- Red
+        {.4, .4, .4, .9}, -- Black
+        {1, 1, 1, .9} -- White
     }
 }

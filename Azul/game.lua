@@ -32,8 +32,8 @@ for number = 1, 100 do
 end
 
 -- Create buckets and assign to game
-local x_pos = 100
-local width = (love.graphics.getWidth() - 20 ) / 4
+local x_pos = 135
+local width = (love.graphics.getWidth() -20 ) / 4
 for number = 1, 4 do
     
     local bucket = Bucket(number, x_pos)
@@ -42,26 +42,6 @@ for number = 1, 4 do
     x_pos = x_pos + width + 5
 end
 
-
-
--- function func.fillBuckets()
-    
---     for _, bucket in pairs(buckets) do
-
---         local rndKey = func.getRandomTileKey()
---         for key, tile in pairs(tiles) do
---             if key == rndKey then
---                 tile:printOwner()
---                 tile:setOwner(bucket)
---                 tile:setInplay()
---                 tile:printOwner()
---                 print('Tile is in play: ' ..tostring(tile.InPlay))
---                 bucket:setOwnedEntityPos()
-            
---             end
---         end
---     end
--- end
 function func.fillBuckets()
     -- Create a copy of available tiles to avoid modifying original array
     local availableTiles = {}
@@ -74,44 +54,47 @@ function func.fillBuckets()
     -- Assign tiles to buckets
     for _, bucket in pairs(buckets) do
         -- Check if we still have available tiles
-        if #availableTiles > 0 then
-            -- Get random tile index
-            local randomIndex = math.random(#availableTiles)
-            local selectedTile = availableTiles[randomIndex]
-            
-            -- Remove tile from available pool
-            table.remove(availableTiles, randomIndex)
-            
-            -- Assign tile to bucket
-            selectedTile:setOwner(bucket)
-            selectedTile:setInplay()
-            bucket:setOwnedEntityPos()
-            
-            print(string.format('Assigned tile: ' .. selectedTile.id .. ' to bucket: ' .. bucket.nr))
+        for number = 1, 4 do
+            if #availableTiles > 0 then
+                -- Get random tile index
+                local randomIndex = math.random(#availableTiles)
+                local selectedTile = availableTiles[randomIndex]
+                
+                -- Remove tile from available pool
+                table.remove(availableTiles, randomIndex)
+                
+                -- Assign tile to bucket
+                selectedTile:setOwner(bucket)
+                selectedTile:setInplay()
+                
+                
+                print(string.format('Assigned tile: ' .. selectedTile.id .. ' to bucket: ' .. bucket.nr))
+            end
         end
+    end
+    
+    -- Set position of tiles in each bucket
+    for _, bucket in pairs(buckets) do
+        bucket:setOwnedEntityPos(bucket.id)
     end
 end
 
--- function func.getRandomTileKey()
---     local firstKey, lastKey = 1, #tiles
---     local con = true
---     local key
---     while con do
---          key = math.random(firstKey, lastKey)
-         
---         if not tiles[key].owner then
-            
---             con = false
---         else
-            
+-- function func.checkBuckets()
+--     local x, y = 50, 50
+--     for _, bucket in pairs(buckets) do
+--         for _, tile in pairs(bucket.ownedEntities) do
+--             print('Bucket nr: ' .. bucket.nr .. ' Owns ' .. #bucket.ownedEntities .. ' entities!')
+--             print('Bucket nr ' .. bucket.nr .. ' Is assigned tile with id: ' .. tile.id)
+--             print('Tile has possition: x: ' .. tile.body:getX() .. ' y: ' .. tile.body:getY())
+--             print('Is tile: ' .. tostring(tile:is(Tile)))
+--             tile:setPos(x, y)
+--             x = x + 70
+--             print('Tile has possition: x: ' .. tile.body:getX() .. ' y: ' .. tile.body:getY())
 --         end
 --     end
---         return key
 -- end
-
-
     func.fillBuckets()
- 
+    -- func.checkBuckets()
 
 
 

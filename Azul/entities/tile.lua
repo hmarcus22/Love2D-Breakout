@@ -16,7 +16,8 @@ local Tile = Entity:extend()
         self.body:setFixedRotation(true)
         self.body:setMassData(0,0,0,0)       
         self.shape = love.physics.newRectangleShape(self.size, self.size)
-        self.fixture = nil
+        self.fixture = love.physics.newFixture(self.body, self.shape, 1)
+        self.fixture:setUserData(self)
         self.hasDraw = true
         self.bucket = 0
         self.inPlay = false
@@ -27,8 +28,11 @@ local Tile = Entity:extend()
 
     end
 
-    function Tile:setPos(x, y)
-        self.body:setPosition(x, y)
+    function Tile:setPos(x, y, id)
+        if id == self.id then
+            -- print('setPos x, y: ' .. x, y)
+            self.body:setPosition(x, y)
+        end
         
     end
 
@@ -48,8 +52,9 @@ local Tile = Entity:extend()
                 self.texture:getHeight()/2
             )
             
+            
             -- Use a different color for the text based on the tile type
-            if self.tType == 5 or self.tType == 2 then
+            if self.tType == 5 then
                 love.graphics.setColor(state.palette[4])  -- Black
             else
                 love.graphics.setColor(state.palette[5])  -- White
@@ -63,7 +68,8 @@ local Tile = Entity:extend()
   
     function Tile:update(dt)
         
-        self:createDestroy()
+        
+        
 
         if state.left_mouse_click then
             if self.fixture:testPoint(love.mouse.getPosition()) then
@@ -91,8 +97,8 @@ local Tile = Entity:extend()
 
     function Tile:createDestroy()
         if self.inPlay then
-            self.fixture = love.physics.newFixture(self.body, self.shape, 1)
-            self.fixture:setUserData(self)
+            
+            
         elseif not self.inPlay then
             if self.fixture then            
                 self.fixture:destroy()
