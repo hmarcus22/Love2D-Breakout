@@ -1,9 +1,9 @@
-local Object = require "classic"
+local Entity = require "entities/entity"
 
-local Gameboard = Object:extend()
+local Gameboard = Entity:extend()
 
     function Gameboard:new()
-
+        Gameboard.super.new(self, id)
         self.tileBoard = {}
         self.tileInput = {}
         self.minusRow = {}

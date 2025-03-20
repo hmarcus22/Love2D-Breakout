@@ -3,6 +3,7 @@ local Entity = require "entities/entity"
 local Tile = require "entities/tile"
 local state = require "state"
 local Bucket = require "entities/bucket"
+local Gameboard = require "entities/gameboard"
 -- local tile_ = require "entities/tile_"
 
 math.randomseed(state.seed)
@@ -12,6 +13,7 @@ local game = Entity()
 local func = {}
 local tiles = {}
 local buckets = {}
+local gameboards = {}
 
 
 
@@ -42,6 +44,15 @@ for number = 1, state.nrBuckets do
     x_pos = x_pos + width + 5
 end
 
+--Add Gameboards
+for number = 1,  state.nrPlayers do
+    local gameboard = Gameboard()
+    table.insert(gameboards, gameboard)
+    gameboard:setOwner(game)
+end
+
+
+-- Add tiles to buckets to be put in game init?
 function func.fillBuckets()
     -- Create a copy of available tiles to avoid modifying original array
     local availableTiles = {}
@@ -79,19 +90,23 @@ function func.fillBuckets()
     end
 end
 
-function func.checkBuckets()
-    local x, y = 50, 50
-    for _, bucket in pairs(buckets) do
-        for _, tile in pairs(bucket.ownedEntities) do
-            local x, y = bucket.body:getPosition()
-            local 
-            print('Bucket pos: ' .. x, y .. ' Tile pos: ' .. )
-          
-        end
-    end
+--Add Gameboards
+for number = 1,  state.nrPlayers do
+
+
 end
+
+
+-- function func.checkBuckets()
+--     local x, y = 50, 50
+--     for _, bucket in pairs(buckets) do
+--         for _, tile in pairs(bucket.ownedEntities) do
+--             local x, y = bucket.body:getPosition()          
+--         end
+--     end
+-- end
     func.fillBuckets()
-    func.checkBuckets()
+    -- func.checkBuckets()
 
 
 

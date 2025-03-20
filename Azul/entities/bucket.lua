@@ -37,15 +37,16 @@ local Bucket = Entity:extend()
         local index = tileIndex -1
         local step = 50
         local gap = 10
-        
         local x = self.body:getX() - ((step + gap)/2)
-        x = x + ((step + gap) * index)        
         local y = self.body:getY() - ((step + gap)/2)
-        
-        -- y = y + ((step + gap) * index)
-       
-
-        
+        if tileIndex <= 2 then
+            x = x + ((step + gap) * index)
+        elseif tileIndex >=3 then
+            index = index - 2
+            x = self.body:getX() - ((step + gap)/2)
+            x = x + ((step + gap) * index)        
+            y = self.body:getY() + ((step + gap)/2)
+        end
         return x, y
     end
     

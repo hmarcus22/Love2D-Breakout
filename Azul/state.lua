@@ -1,5 +1,5 @@
 return {
-    nrPlayers = 4,
+    nrPlayers = 2,
     nrTiles = 100,
     nrBuckets = 5,
     seed = os.time(),
