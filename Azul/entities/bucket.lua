@@ -22,11 +22,21 @@ local Bucket = Entity:extend()
         self.contact = false
         self.ox = self.body:getX() - (self.radius / 2)
         self.oy = self.body:getY() - (self.height / 2)
+        self.texture = love.graphics.newImage('img/bucket.png')
         
     end
 
     function Bucket:draw()
-
+        love.graphics.draw(
+                self.texture, 
+                self.x, 
+                self.y, 
+                0,      -- Rotation
+                .5,     -- Scale factor x
+                .5,     -- Scale factor y
+                self.texture:getWidth()/2, 
+                self.texture:getHeight()/2
+            )
         love.graphics.circle('line', self.x, self.y , self.radius)
         love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
         love.graphics.print('Bucket :' .. self.nr, self.x - (self.radius / 2 - 5), self.y - (self.height / 2 - 5))

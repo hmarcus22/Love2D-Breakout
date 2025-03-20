@@ -87,6 +87,7 @@ function func.fillBuckets()
     -- Set position of tiles in each bucket
     for _, bucket in pairs(buckets) do
         bucket:setOwnedEntityPos(bucket.id)
+        print(bucket.radius)
     end
 end
 
