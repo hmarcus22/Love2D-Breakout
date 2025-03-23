@@ -23,7 +23,29 @@ local Bucket = Entity:extend()
         self.ox = self.body:getX() - (self.radius / 2)
         self.oy = self.body:getY() - (self.height / 2)
         self.texture = love.graphics.newImage('img/bucket.png')
+        self.tType = 0
+    end
+
+    function Bucket:update(dt)
+          -- First determine if we're hovering over any tile
+        local isHovering = false
+        for _, tile in pairs(self.ownedEntities) do
+            if tile.mouseOver then
+                self.tType = tile:gettType()
+                isHovering = true
+                break  -- Stop checking once we found a hovered tile
+            end
+        end
         
+        -- If no hover, reset tType
+        if not isHovering then
+            self.tType = 0
+        end
+        
+        -- Process highlighting in a single pass
+        for _, tile in pairs(self.ownedEntities) do
+            tile.highlight = (tile.tType == self.tType)
+    end
     end
 
     function Bucket:draw()
@@ -59,13 +81,6 @@ local Bucket = Entity:extend()
         end
         return x, y
     end
-    
-    function Bucket:update(dt)
-        
-        
-    end
-
-
     function Bucket:setOwnedEntityPos(id)
         if self.id == id then
             print('Bucket nr: ' .. self.nr)

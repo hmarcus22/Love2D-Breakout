@@ -1,10 +1,12 @@
 local Entity = require "entities/entity"
 local Square = require "entities/square"
+local state = require "state"
 
 local Gameboard = Entity:extend()
 
-    function Gameboard:new()
+    function Gameboard:new(playerNr)
         Gameboard.super.new(self, id)
+        self.player = playerNr
         self.tileMatrix = nil
         self.tileInput = nil -- upp to 5 tiles
         self.minusRow = {} -- 7 tiles
@@ -119,39 +121,30 @@ local Gameboard = Entity:extend()
     end
 
     function Gameboard:update(dt)
-        local type = 0
-        for _, tile in pairs(self.ownedEntities) do
-            if tile.mouseOver then
-                type = tile.tType
-            end
-        end
-        for _, tile in pairs(self.ownedEntities) do
-            if tile.tType == type then
-                tile.hilightToggle()
-                print('Highlitgh!')
-            end
-        end
+      
     end
 
     function Gameboard:draw()
-
-        love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
-        love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
-        for _, row  in ipairs(self.tileMatrix) do
-            for _, square in pairs(row) do
+        if state.curentPlayer == self.player then
+            love.graphics.print('Player' .. self.player, self.x, self.y, 0, 1, 1, self.width * .5 - 10, self.height * .5 -10)
+            love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
+            love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
+            for _, row  in ipairs(self.tileMatrix) do
+                for _, square in pairs(row) do
+                    love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
+                    -- print(square.x, square.y)
+                end
+            end
+            for _, row  in ipairs(self.tileInput) do
+                for _, square in pairs(row) do
+                    love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
+                    -- print(square.x, square.y)
+                end
+            end
+            for _, square in pairs(self.minusRow) do
                 love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
                 -- print(square.x, square.y)
             end
-        end
-        for _, row  in ipairs(self.tileInput) do
-            for _, square in pairs(row) do
-                love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
-                -- print(square.x, square.y)
-            end
-        end
-        for _, square in pairs(self.minusRow) do
-            love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
-            -- print(square.x, square.y)
         end
     end
 

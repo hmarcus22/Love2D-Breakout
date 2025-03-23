@@ -8,7 +8,7 @@ local Tile = Entity:extend()
     function Tile:new(type, x, y)
         Tile.super.new(self)
         self.tType = (type or 5)
-        self.size = 30
+        self.size = 50
         self.x = x
         self.y = (y or 20)
         self.body = love.physics.newBody(world, self.x, self.y, 'static')
@@ -24,9 +24,12 @@ local Tile = Entity:extend()
         self.contact = false
         self.drag = false
         self.texture = love.graphics.newImage('img/gem.png')
-        self.hiLight = false
+        self.highlight = false
         self.scale = .5
+        self.scaleT = self.scale
+        self.scaleSpeed = 20
         self.mouseOver = false
+        self.selected = false
         
 
     end
@@ -54,51 +57,62 @@ local Tile = Entity:extend()
                 self.texture:getWidth()/2, 
                 self.texture:getHeight()/2
             )
-            
-            
-            -- Use a different color for the text based on the tile type
-            -- if self.tType == 5 then
-            --     love.graphics.setColor(state.palette[4])  -- Black
-            -- else
                 love.graphics.setColor(state.palette[5])  -- White
-            -- end
-            
-            --Debug stuff
-            -- love.graphics.print(self.tType, self.body:getX() -5, self.body:getY())
             love.graphics.print('O: ' .. tostring(self.owner.nr), self.body:getX() - 20, self.body:getY())
         end
     end
 
-    -- function Tile:mouseOver()
+    function Tile:gettType()
+        return self.tType
         
+    end
 
-    -- end
+    function Tile:getMouseOver()
+        print('returning Mouseover true!')
+        return self.mouseOver
+        
+    end
 
-    function Tile:hilightToggle()
-        self.hiLight = not self.hiLight
+    function Tile:getHighlight()
+        return self.highlight
+        
+    end
+    
+    function Tile:hilightToggle(toggle)
+        self.highlight = toggle
     end
 
   
     function Tile:update(dt)
+        --Check if mouse over
         if self.fixture:testPoint(love.mouse.getPosition()) then
             self.mouseOver = true
+            print('MouseOver!')
         else
             self.mouseOver = false
         end
-        if self.hiLight then
-            self.scale = .55
+        --Set scale
+        if self.highlight and self.mouseOver then
+            self.scaleT = .6
+        else if self.highlight then
+            self.scaleT = .55
         else
-            self.scale = .5
+            self.scaleT = .5
         end
-        
-        
+        end
+        --Smooth scaling
+        if self.scale ~= self.scaleT then
+            local ds = self.scaleT - self.scale
+            self.scale = self.scale + ds * self.scaleSpeed * dt
+        end
+        --Handle mouse click interaction
         if state.left_mouse_click then
             if self.fixture:testPoint(love.mouse.getPosition()) then
-                self.drag = true
+                
             end
         end
         if not state.left_mouse_click then
-            self.drag = false
+            
         end
         if self.drag then
             
@@ -116,16 +130,16 @@ local Tile = Entity:extend()
         self.inPlay = true
     end
 
-    function Tile:createDestroy()
-        if self.inPlay then
+    -- function Tile:createDestroy()
+    --     if self.inPlay then
             
             
-        elseif not self.inPlay then
-            if self.fixture then            
-                self.fixture:destroy()
-            end
-        end
-    end
+    --     elseif not self.inPlay then
+    --         if self.fixture then            
+    --             self.fixture:destroy()
+    --         end
+    --     end
+    -- end
 
   
 

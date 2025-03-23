@@ -3,6 +3,7 @@ return {
     nrTiles = 100,
     nrBuckets = 5,
     seed = os.time(),
+    curentPlayer = 1,
     left_mouse_click = false,
     right_mouse_click = false,
     palette = {

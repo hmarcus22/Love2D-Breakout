@@ -99,12 +99,12 @@ end
 
 function Entity:updateAll(dt)
     -- Draw this entity first
-    self:update()
+    self:update(dt)
     
     -- Then update all owned entities
     if self.ownedEntities then
         for _, ownedEntity in pairs(self.ownedEntities) do
-            ownedEntity:updateAll()
+            ownedEntity:updateAll(dt)
         end
     end
 end

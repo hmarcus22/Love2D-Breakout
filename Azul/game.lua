@@ -16,7 +16,9 @@ local buckets = {}
 local gameboards = {}
 
 
-
+function game:update(dt)
+    
+end
 
 -- Create tiles
 local tile_type = 1
@@ -46,7 +48,7 @@ end
 
 --Add Gameboards
 for number = 1,  state.nrPlayers do
-    local gameboard = Gameboard()
+    local gameboard = Gameboard(number)
     gameboard:initBoard()
     table.insert(gameboards, gameboard)
     gameboard:setOwner(game)
