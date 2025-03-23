@@ -47,6 +47,7 @@ end
 --Add Gameboards
 for number = 1,  state.nrPlayers do
     local gameboard = Gameboard()
+    gameboard:initBoard()
     table.insert(gameboards, gameboard)
     gameboard:setOwner(game)
 end

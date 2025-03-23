@@ -24,6 +24,9 @@ local Tile = Entity:extend()
         self.contact = false
         self.drag = false
         self.texture = love.graphics.newImage('img/gem.png')
+        self.hiLight = false
+        self.scale = .5
+        self.mouseOver = false
         
 
     end
@@ -46,8 +49,8 @@ local Tile = Entity:extend()
                 self_x, 
                 self_y, 
                 0,      -- Rotation
-                .5,     -- Scale factor x
-                .5,     -- Scale factor y
+                self.scale,     -- Scale factor x
+                self.scale,     -- Scale factor y
                 self.texture:getWidth()/2, 
                 self.texture:getHeight()/2
             )
@@ -65,12 +68,30 @@ local Tile = Entity:extend()
             love.graphics.print('O: ' .. tostring(self.owner.nr), self.body:getX() - 20, self.body:getY())
         end
     end
-  
-    function Tile:update(dt)
-        
-        
+
+    -- function Tile:mouseOver()
         
 
+    -- end
+
+    function Tile:hilightToggle()
+        self.hiLight = not self.hiLight
+    end
+
+  
+    function Tile:update(dt)
+        if self.fixture:testPoint(love.mouse.getPosition()) then
+            self.mouseOver = true
+        else
+            self.mouseOver = false
+        end
+        if self.hiLight then
+            self.scale = .55
+        else
+            self.scale = .5
+        end
+        
+        
         if state.left_mouse_click then
             if self.fixture:testPoint(love.mouse.getPosition()) then
                 self.drag = true
@@ -82,7 +103,7 @@ local Tile = Entity:extend()
         if self.drag then
             
             local x, y = love.mouse:getPosition()
-            x = x +200
+            -- x = x +200
             self.body:setPosition(x, y)
             self.x = x
             self.y = y

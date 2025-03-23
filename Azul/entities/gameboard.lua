@@ -1,16 +1,13 @@
 local Entity = require "entities/entity"
+local Square = require "entities/square"
 
 local Gameboard = Entity:extend()
 
     function Gameboard:new()
         Gameboard.super.new(self, id)
-        self.tileMatrix = { {1}, {2}, {3}, {4}, {5},
-                            {5}, {1}, {2}, {3}, {4},
-                            {4}, {5}, {1}, {2}, {3},
-                            {3}, {4}, {5}, {1}, {2},
-                            {2}, {3}, {4}, {5}, {1} }
-        self.tileInput = { {}, {}, {}, {}, {} }
-        self.minusRow = {}
+        self.tileMatrix = nil
+        self.tileInput = nil -- upp to 5 tiles
+        self.minusRow = {} -- 7 tiles
         self.selectedTiles =  {}
         self.selectedRow = 0
         self.width = love.graphics.getWidth() - 40
@@ -23,6 +20,73 @@ local Gameboard = Entity:extend()
         self.fixture:isSensor(true)
         self.fixture:setUserData(self)
         self.contact = false
+        self.offsetX = 80
+    end
+    
+    function Gameboard:initBoard()
+        self:initTileMatrix()
+        self:initTileInput()
+        self:initMinusRow()
+        
+    end
+    
+    function Gameboard:initTileMatrix()
+        local y_pos = 420
+        local matrix = {{1, 2, 3, 4, 5},
+                        {5, 1, 2, 3, 4},
+                        {4, 5, 1, 2, 3},
+                        {3, 4, 5, 1, 2},
+                        {2, 3, 4, 5, 1}}
+        local grid = {}
+        for _, row in ipairs(matrix) do
+            local x_pos = (self.width * .5) + 10
+            local sRow = {}
+            for _, type in pairs(row) do
+                local square = Square(x_pos, y_pos, type)
+                table.insert(sRow, square)
+                x_pos = x_pos + 50
+            end
+            table.insert(grid, sRow)
+            y_pos = y_pos + 50
+        end
+        self.tileMatrix = grid
+    end
+
+    function Gameboard:initTileInput()
+        local y_pos = 420
+        local matrix = {{1},
+                        {5, 1},
+                        {4, 5, 1},
+                        {3, 4, 5, 1},
+                        {2, 3, 4, 5, 1}}
+        local grid = {}
+        for _, row in ipairs(matrix) do
+            local x_pos = (self.width * .5) - self.offsetX
+            local sRow = {}
+            for _, type in pairs(row) do
+                local square = Square(x_pos, y_pos, type)
+                table.insert(sRow, square)
+                x_pos = x_pos - 50
+            end
+            table.insert(grid, sRow)
+            y_pos = y_pos + 50
+        end
+        self.tileInput = grid
+        
+    end
+    
+    function Gameboard:initMinusRow()
+        local y_pos = 725
+
+        local matrix = {1, 2, 3, 4, 5, 6, 7}
+        local x_pos = (self.width * .5) + 180
+        for number = 1, 7 do
+            
+            local square = Square(x_pos, y_pos, type)
+            table.insert(self.minusRow, square)
+            x_pos = x_pos - 50
+        end
+        
         
     end
     
@@ -54,10 +118,41 @@ local Gameboard = Entity:extend()
         
     end
 
+    function Gameboard:update(dt)
+        local type = 0
+        for _, tile in pairs(self.ownedEntities) do
+            if tile.mouseOver then
+                type = tile.tType
+            end
+        end
+        for _, tile in pairs(self.ownedEntities) do
+            if tile.tType == type then
+                tile.hilightToggle()
+                print('Highlitgh!')
+            end
+        end
+    end
+
     function Gameboard:draw()
 
         love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
         love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
+        for _, row  in ipairs(self.tileMatrix) do
+            for _, square in pairs(row) do
+                love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
+                -- print(square.x, square.y)
+            end
+        end
+        for _, row  in ipairs(self.tileInput) do
+            for _, square in pairs(row) do
+                love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
+                -- print(square.x, square.y)
+            end
+        end
+        for _, square in pairs(self.minusRow) do
+            love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
+            -- print(square.x, square.y)
+        end
     end
 
     function Gameboard:begin_contact()
