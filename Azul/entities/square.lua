@@ -11,6 +11,7 @@ function Square:new(x, y, type)
     self.body = love.physics.newBody(world, x, y, 'static')
     self.shape = love.physics.newRectangleShape(self.width, self.height)
     self.fixture = love.physics.newFixture(self.body, self.shape, 1)
+    self.free = true
 
 end
 

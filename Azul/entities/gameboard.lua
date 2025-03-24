@@ -10,6 +10,7 @@ local Gameboard = Entity:extend()
         self.tileMatrix = nil
         self.tileInput = nil -- upp to 5 tiles
         self.minusRow = {} -- 7 tiles
+        self.minusRowCount = 0
         self.selectedTiles =  {}
         self.selectedRow = 0
         self.width = love.graphics.getWidth() - 40
@@ -68,17 +69,32 @@ local Gameboard = Entity:extend()
        end
 
        --Insert tiles to selected input row
-       if state.left_mouse_click then
-            if self.selectedRow > 0 then
-                local pos = #self.tileInput[self.selectedRow]
-                for _, tile in pairs(self.ownedEntities) do
-                    
-                    tile.choosen = false
-                    tile.setTarget(self.tileInput[self.selectedRow][pos]:getPos())
-
-                end
+       if self.selectedRow > 0 and state.left_mouse_click then
+          for _, tile in pairs(self.ownedEntities) do
+            if tile.choosen then
+                self:addTileToInputRow(tile, self.selectedRow)
             end
+          end
        end
+   end
+
+   function Gameboard:addTileToInputRow(tile, rowNr)
+        local maxSize = rowNr
+        
+        if #self.tileInput[rowNr] >= maxSize then
+            self.minusRowCount = self.minusRowCount +1
+            tile.minus = true
+            tile.choosen = false
+            tile.setTarget(self.minusRow[self.minusRowCount]:getPos())
+        end
+        tile.input = true
+        tile.choosen = false
+        for i, square in ipairs(self.tileInput[rowNr]) do
+            if square.free then
+                tile.setTarget(square:getPos())
+            end
+        end
+
    end
 
    function Gameboard:draw()
