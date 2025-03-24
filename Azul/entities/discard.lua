@@ -1,6 +1,6 @@
-local Bucket = require "entities/bucket"
+local Entity = require "entities/entity"
 
-local Discard = Bucket:extend()
+local Discard = Entity:extend()
 
     
 
@@ -25,9 +25,24 @@ local Discard = Bucket:extend()
         self.texture = love.graphics.newImage('img/bucket.png')
         self.tType = 0
         self.discard = discard or false
+        self.owned = 0
     end
 
     function Discard:update(dt)
+        for _, tile in pairs(self.ownedEntities) do
+            if tile.body:getX() ~= tile.targetX or tile.body:getY() ~= tile.targetY then
+                        
+                local dx = tile.targetX - tile.body:getX()
+                local dy = tile.targetY - tile.body:getY()
+                local newX = tile.body:getX() + dx * tile.speed * dt
+                local newY = tile.body:getY() + dy * tile.speed * dt
+                
+                tile.body:setPosition(newX, newY)
+                tile.x = newX
+                tile.y = newY
+            end
+        end
+        
         if self.ownedEntities then
             
                 local tileIndex = 1
@@ -35,7 +50,7 @@ local Discard = Bucket:extend()
                 -- if tile:is(Tile) then
                     local x, y = self:calculateTilePosition(tileIndex)
                     -- print('Updateing bodys owned entities position to x: ' .. x .. ' y: ' .. y)
-                    tile:setPos(x, y, tile.id)
+                    tile:setTarget(x, y, tile.id)
                     tileIndex = tileIndex + 1
                 -- end
             end
@@ -61,6 +76,17 @@ local Discard = Bucket:extend()
         for _, tile in pairs(self.ownedEntities) do
             tile.highlight = (tile.tType == self.tType)
         end
+
+        
+            if self.ownedEntities then
+                local count = 0
+                for _, tile in pairs(self.ownedEntities)do
+                    
+                        count = count + 1
+                    
+                end
+                self.owned = count
+            end
     end
 
     function Discard:draw()
@@ -73,10 +99,10 @@ local Discard = Bucket:extend()
                 .5,     -- Scale factor y
                 self.texture:getWidth()/2, 
                 self.texture:getHeight()/2
-            )
+            )        
         love.graphics.circle('line', self.x, self.y , self.radius)
         love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
-        love.graphics.print('Bucket :' .. self.nr, self.x - (self.radius / 2 - 5), self.y - (self.height / 2 - 5))
+        love.graphics.print('Owns :' .. self.owned, self.x - (self.radius / 2 - 5), self.y - (self.height / 2 - 5))
     end
 
     function Discard:calculateTilePosition(tileIndex)
@@ -86,10 +112,10 @@ local Discard = Bucket:extend()
         local gap = 10
         local x = self.body:getX() - ((step + gap)/2)
         local y = self.body:getY() - ((step + gap)/2)
-        if tileIndex <= 2 then
+        if tileIndex <= 8 then
             x = x + ((step + gap) * index)
-        elseif tileIndex >=3 then
-            index = index - 2
+        elseif tileIndex >=9 then
+            index = index - 8
             x = self.body:getX() - ((step + gap)/2)
             x = x + ((step + gap) * index)        
             y = self.body:getY() + ((step + gap)/2)

@@ -133,7 +133,7 @@ local Gameboard = Entity:extend()
                 tile.targetY = love.mouse.getY()
             
                 --Chase target smoothly
-                if self.body:getX() ~= self.targetX or self.body:getY() ~= self.targetY then
+                if tile.body:getX() ~= tile.targetX or tile.body:getY() ~= tile.targetY then
                     
                     local dx = tile.targetX - tile.body:getX()
                     local dy = tile.targetY - tile.body:getY()

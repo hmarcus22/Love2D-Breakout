@@ -45,6 +45,15 @@ local Tile = Entity:extend()
         
     end
 
+    function Tile:setTarget(x, y, id)
+        if id == self.id then
+            -- print('setPos x, y: ' .. x, y)
+            self.targetX = x
+            self.targetY = y
+        end
+        
+    end
+
     function Tile:update(dt)
         --Check if mouse over
         if self.fixture:testPoint(love.mouse.getPosition()) then
