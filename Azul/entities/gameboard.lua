@@ -53,6 +53,8 @@ local Gameboard = Entity:extend()
                end
            end
        end
+       
+       --Dectect wich row is selected
        self.selectedRow = 0
        self.isRow = false
        for ir, row in ipairs(self.tileInput) do
@@ -63,6 +65,19 @@ local Gameboard = Entity:extend()
                    break
                end
            end
+       end
+
+       --Insert tiles to selected input row
+       if state.left_mouse_click then
+            if self.selectedRow > 0 then
+                local pos = #self.tileInput[self.selectedRow]
+                for _, tile in pairs(self.ownedEntities) do
+                    
+                    tile.choosen = false
+                    tile.setTarget(self.tileInput[self.selectedRow][pos]:getPos())
+
+                end
+            end
        end
    end
 
