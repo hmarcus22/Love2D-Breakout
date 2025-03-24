@@ -30,6 +30,11 @@ function Entity:setOwner(owner)
     return self
 end
 
+function Entity:getOwnerId()
+    return self.owner.id
+    
+end
+
 function Entity:addOwnedEntity(entity)
     -- Only add entity if it's not already owned by someone else
     if entity.owner == nil or entity.owner == self then

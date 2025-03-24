@@ -121,7 +121,31 @@ local Gameboard = Entity:extend()
     end
 
     function Gameboard:update(dt)
-      
+         --If choosen chase mouse
+        --Set target
+        local tileCount = 0
+        local step = 60
+        for _, tile in pairs(self.ownedEntities) do
+            if tile.choosen then
+                tileCount = tileCount +1
+                local offX = tileCount * step
+                tile.targetX = love.mouse.getX() - offX
+                tile.targetY = love.mouse.getY()
+            
+                --Chase target smoothly
+                if self.body:getX() ~= self.targetX or self.body:getY() ~= self.targetY then
+                    
+                    local dx = tile.targetX - tile.body:getX()
+                    local dy = tile.targetY - tile.body:getY()
+                    local newX = tile.body:getX() + dx * tile.speed * dt
+                    local newY = tile.body:getY() + dy * tile.speed * dt
+                    
+                    tile.body:setPosition(newX, newY)
+                    tile.x = newX
+                    tile.y = newY
+                end
+            end
+        end
     end
 
     function Gameboard:draw()

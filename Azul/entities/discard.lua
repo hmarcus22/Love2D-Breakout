@@ -1,11 +1,11 @@
-local Entity = require "entities/entity"
+local Bucket = require "entities/bucket"
 
-local Bucket = Entity:extend()
+local Discard = Bucket:extend()
 
     
 
-    function Bucket:new(nr, x_pos, y_pos, discard)
-        Bucket.super.new(self, id)
+    function Discard:new(nr, x_pos, y_pos, discard)
+        Discard.super.new(self, id)
         self.nr = nr
         self.type = 'bucket'
         self.tileBucket = {}
@@ -27,8 +27,22 @@ local Bucket = Entity:extend()
         self.discard = discard or false
     end
 
-    function Bucket:update(dt)
-          -- First determine if we're hovering over any tile
+    function Discard:update(dt)
+        if self.ownedEntities then
+            
+                local tileIndex = 1
+            for _, tile in pairs(self.ownedEntities) do
+                -- if tile:is(Tile) then
+                    local x, y = self:calculateTilePosition(tileIndex)
+                    -- print('Updateing bodys owned entities position to x: ' .. x .. ' y: ' .. y)
+                    tile:setPos(x, y, tile.id)
+                    tileIndex = tileIndex + 1
+                -- end
+            end
+            
+        end
+        
+        -- First determine if we're hovering over any tile
         local isHovering = false
         for _, tile in pairs(self.ownedEntities) do
             if tile.mouseOver then
@@ -49,7 +63,7 @@ local Bucket = Entity:extend()
         end
     end
 
-    function Bucket:draw()
+    function Discard:draw()
         love.graphics.draw(
                 self.texture, 
                 self.x, 
@@ -65,7 +79,7 @@ local Bucket = Entity:extend()
         love.graphics.print('Bucket :' .. self.nr, self.x - (self.radius / 2 - 5), self.y - (self.height / 2 - 5))
     end
 
-    function Bucket:calculateTilePosition(tileIndex)
+    function Discard:calculateTilePosition(tileIndex)
         
         local index = tileIndex -1
         local step = 50
@@ -82,7 +96,7 @@ local Bucket = Entity:extend()
         end
         return x, y
     end
-    function Bucket:setOwnedEntityPos()
+    function Discard:setOwnedEntityPos()
         -- if self.id == id then
             print('Bucket nr: ' .. self.nr)
             local tileIndex = 1
@@ -99,4 +113,4 @@ local Bucket = Entity:extend()
 
     end
 
-    return Bucket
+    return Discard

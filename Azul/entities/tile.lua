@@ -30,7 +30,10 @@ local Tile = Entity:extend()
         self.scaleSpeed = 20
         self.mouseOver = false
         self.selected = false
-        
+        self.choosen = false
+        self.targetX = self.body:getX()
+        self.targetY = self.body:getY()
+        self.speed = 20
 
     end
 
@@ -40,6 +43,52 @@ local Tile = Entity:extend()
             self.body:setPosition(x, y)
         end
         
+    end
+
+    function Tile:update(dt)
+        --Check if mouse over
+        if self.fixture:testPoint(love.mouse.getPosition()) then
+            self.mouseOver = true
+            -- print('MouseOver!')
+        else
+            self.mouseOver = false
+        end
+        --Set scale
+        if self.highlight and self.mouseOver then
+            self.scaleT = .6
+        else if self.highlight then
+            self.scaleT = .55
+        else
+            self.scaleT = .5
+        end
+        end
+
+         --Smooth scaling
+         if self.scale ~= self.scaleT then
+            local ds = self.scaleT - self.scale
+            self.scale = self.scale + ds * self.scaleSpeed * dt
+        end
+
+       
+       
+        --Handle mouse click interaction
+        if state.left_mouse_click then
+            if self.fixture:testPoint(love.mouse.getPosition()) then
+                self.selected = not self.selected
+            end
+        end
+        if not state.left_mouse_click then
+            
+        end
+        -- if self.drag then
+            
+        --     local x, y = love.mouse:getPosition()
+        --     -- x = x +200
+        --     self.body:setPosition(x, y)
+        --     self.x = x
+        --     self.y = y
+        -- end
+
     end
 
     function Tile:draw()
@@ -80,49 +129,6 @@ local Tile = Entity:extend()
     
     function Tile:hilightToggle(toggle)
         self.highlight = toggle
-    end
-
-  
-    function Tile:update(dt)
-        --Check if mouse over
-        if self.fixture:testPoint(love.mouse.getPosition()) then
-            self.mouseOver = true
-            print('MouseOver!')
-        else
-            self.mouseOver = false
-        end
-        --Set scale
-        if self.highlight and self.mouseOver then
-            self.scaleT = .6
-        else if self.highlight then
-            self.scaleT = .55
-        else
-            self.scaleT = .5
-        end
-        end
-        --Smooth scaling
-        if self.scale ~= self.scaleT then
-            local ds = self.scaleT - self.scale
-            self.scale = self.scale + ds * self.scaleSpeed * dt
-        end
-        --Handle mouse click interaction
-        if state.left_mouse_click then
-            if self.fixture:testPoint(love.mouse.getPosition()) then
-                
-            end
-        end
-        if not state.left_mouse_click then
-            
-        end
-        if self.drag then
-            
-            local x, y = love.mouse:getPosition()
-            -- x = x +200
-            self.body:setPosition(x, y)
-            self.x = x
-            self.y = y
-        end
-
     end
 
     function Tile:setInplay()

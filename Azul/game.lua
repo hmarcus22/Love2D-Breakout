@@ -4,6 +4,10 @@ local Tile = require "entities/tile"
 local state = require "state"
 local Bucket = require "entities/bucket"
 local Gameboard = require "entities/gameboard"
+local Discard = require "entities/discard"
+
+
+
 -- local tile_ = require "entities/tile_"
 
 math.randomseed(state.seed)
@@ -14,10 +18,46 @@ local func = {}
 local tiles = {}
 local buckets = {}
 local gameboards = {}
-
+local discard = Discard(state.nrBuckets +1, 540, 250, true )
+discard:setOwner(game)
 
 function game:update(dt)
-    
+    --find selected tileType
+    if state.left_mouse_click then
+        local tType = 0
+        local owner = nil
+        local isSelected = false
+        for _, tile in pairs(tiles) do
+            if tile.selected then
+                tType = tile.tType
+                owner = tile.owner
+                isSelected = true
+
+                break
+            end
+        end
+
+        if not isSelected then
+            tType = 0
+        end
+
+        --Set owner for all of same tType and discard the rest
+        
+        for _, tile in pairs(tiles) do
+            if tile.tType == tType and tile.owner == owner then
+                tile:setOwner(gameboards[state.curentPlayer])
+                tile.selected = false
+                tile.choosen = true
+            elseif tile.owner == owner then
+                
+                tile:setOwner(discard)
+                tile.selected = false
+                
+            end
+            --Add discard the rest
+        end
+    end
+
 end
 
 -- Create tiles
@@ -46,6 +86,8 @@ for number = 1, state.nrBuckets do
     x_pos = x_pos + width + 5
 end
 
+
+
 --Add Gameboards
 for number = 1,  state.nrPlayers do
     local gameboard = Gameboard(number)
@@ -68,28 +110,30 @@ function func.fillBuckets()
     -- Assign tiles to buckets
     for _, bucket in pairs(buckets) do
         -- Check if we still have available tiles
-        for number = 1, 4 do
-            if #availableTiles > 0 then
-                -- Get random tile index
-                local randomIndex = math.random(#availableTiles)
-                local selectedTile = availableTiles[randomIndex]
-                
-                -- Remove tile from available pool
-                table.remove(availableTiles, randomIndex)
-                
-                -- Assign tile to bucket
-                selectedTile:setOwner(bucket)
-                selectedTile:setInplay()
-                
-                
-                print(string.format('Assigned tile: ' .. selectedTile.id .. ' to bucket: ' .. bucket.nr))
+        if not bucket.discard then
+            for number = 1, 4 do
+                if #availableTiles > 0 then
+                    -- Get random tile index
+                    local randomIndex = math.random(#availableTiles)
+                    local selectedTile = availableTiles[randomIndex]
+                    
+                    -- Remove tile from available pool
+                    table.remove(availableTiles, randomIndex)
+                    
+                    -- Assign tile to bucket
+                    selectedTile:setOwner(bucket)
+                    selectedTile:setInplay()
+                    
+                    
+                    print(string.format('Assigned tile: ' .. selectedTile.id .. ' to bucket: ' .. bucket.nr))
+                end
             end
         end
     end
     
     -- Set position of tiles in each bucket
     for _, bucket in pairs(buckets) do
-        bucket:setOwnedEntityPos(bucket.id)
+        bucket:setOwnedEntityPos()
         print(bucket.radius)
     end
 end
