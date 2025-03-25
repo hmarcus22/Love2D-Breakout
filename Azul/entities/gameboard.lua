@@ -40,20 +40,35 @@ local Gameboard = Entity:extend()
                tile.targetX = love.mouse.getX() - offX
                tile.targetY = love.mouse.getY()
            
-               --Chase target smoothly
-               if tile.body:getX() ~= tile.targetX or tile.body:getY() ~= tile.targetY then
-                   
-                   local dx = tile.targetX - tile.body:getX()
-                   local dy = tile.targetY - tile.body:getY()
-                   local newX = tile.body:getX() + dx * tile.speed * dt
-                   local newY = tile.body:getY() + dy * tile.speed * dt
-                   
-                   tile.body:setPosition(newX, newY)
-                   tile.x = newX
-                   tile.y = newY
-               end
+               
+               
            end
        end
+          --Insert tiles to selected input row
+          if self.selectedRow >= 1 and state.left_mouse_click then
+            for _, tile in pairs(self.ownedEntities) do
+              if tile.choosen then
+                  self:addTileToInputRow(tile, self.selectedRow)
+              end
+            end
+         end
+
+        --Chase target smoothly
+        if self.ownedEntities then
+            for _, tile in pairs(self.ownedEntities) do
+                if tile.body:getX() ~= tile.targetX or tile.body:getY() ~= tile.targetY then
+                            
+                    local dx = tile.targetX - tile.body:getX()
+                    local dy = tile.targetY - tile.body:getY()
+                    local newX = tile.body:getX() + dx * tile.speed * dt
+                    local newY = tile.body:getY() + dy * tile.speed * dt
+                    
+                    tile.body:setPosition(newX, newY)
+                    tile.x = newX
+                    tile.y = newY
+                end
+            end
+        end
        
        --Dectect wich row is selected
        self.selectedRow = 0
@@ -68,30 +83,36 @@ local Gameboard = Entity:extend()
            end
        end
 
-       --Insert tiles to selected input row
-       if self.selectedRow > 0 and state.left_mouse_click then
-          for _, tile in pairs(self.ownedEntities) do
-            if tile.choosen then
-                self:addTileToInputRow(tile, self.selectedRow)
-            end
-          end
-       end
    end
 
    function Gameboard:addTileToInputRow(tile, rowNr)
         local maxSize = rowNr
         
-        if #self.tileInput[rowNr] >= maxSize then
-            self.minusRowCount = self.minusRowCount +1
-            tile.minus = true
-            tile.choosen = false
-            tile.setTarget(self.minusRow[self.minusRowCount]:getPos())
-        end
-        tile.input = true
-        tile.choosen = false
         for i, square in ipairs(self.tileInput[rowNr]) do
+            if i == rowNr and (not square.free) then
+                for _, mSquare in pairs(self.minusRow) do
+                    if mSquare.free then
+                        local x, y = mSquare:getPos()
+                        print('Minusrow: ' .. x, y)
+                        tile.minus = true
+                        tile.choosen = false
+                        mSquare.free = false
+                        tile:setTarget(x, y, tile.id)
+                        
+                        
+                    end
+                end
+            end
+            
             if square.free then
-                tile.setTarget(square:getPos())
+                local x, y = square:getPos()
+                print('Input row:' .. x, y)
+                tile.input = true
+                tile.choosen = false
+                square.free = false
+                tile:setTarget(x, y, tile.id)
+                
+                break
             end
         end
 

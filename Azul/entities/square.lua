@@ -16,7 +16,8 @@ function Square:new(x, y, type)
 end
 
 function Square:getPos()
-    return self.body:getPos()
+    local x, y = self.body:getPosition()
+    return x, y
 end
 
 return Square

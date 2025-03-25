@@ -36,7 +36,7 @@ local Tile = Entity:extend()
         self.score = false
         self.targetX = self.body:getX()
         self.targetY = self.body:getY()
-        self.speed = 20
+        self.speed = 15
 
     end
 
