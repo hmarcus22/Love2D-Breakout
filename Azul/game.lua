@@ -28,7 +28,7 @@ function game:update(dt)
         local owner = nil
         local isSelected = false
         for _, tile in pairs(tiles) do
-            if tile.selected then
+            if tile.selected and not tile.placed then
                 tType = tile.tType
                 owner = tile.owner
                 isSelected = true
@@ -42,15 +42,15 @@ function game:update(dt)
         end
 
         --Set owner for all of same tType and discard the rest
-        if isSelected then 
+        if isSelected then
             for _, tile in pairs(tiles) do
-                if tile.highlight then
+                if tile.highlight and not tile.placed then
                     
                     tile:setOwner(gameboards[state.curentPlayer])
                     tile.selected = false
                     tile.choosen = true
                     
-                elseif owner == tile.owner then
+                elseif owner == tile.owner and not tile.placed then
                     --Else add to discard
                     
                     tile:setOwner(discard)

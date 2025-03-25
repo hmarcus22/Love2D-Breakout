@@ -7,9 +7,12 @@ local Gameboard = Entity:extend()
     function Gameboard:new(playerNr)
         Gameboard.super.new(self, id)
         self.player = playerNr
-        self.tileMatrix = nil
-        self.tileInput = nil -- upp to 5 tiles
-        self.minusRow = {} -- 7 tiles
+        self.squareMatrix = nil
+        self.tileMatrix = {}
+        self.tileInputSquare = nil -- upp to 5 tiles
+        self.tileInputRow = {}
+        self.minusSquare = {} -- 7 tiles
+        self.minusRow = {}
         self.minusRowCount = 0
         self.selectedTiles =  {}
         self.selectedRow = 0
@@ -73,7 +76,7 @@ local Gameboard = Entity:extend()
        --Dectect wich row is selected
        self.selectedRow = 0
        self.isRow = false
-       for ir, row in ipairs(self.tileInput) do
+       for ir, row in ipairs(self.tileInputSquare) do
            for is, square in ipairs(row) do
                if square.fixture:testPoint(love.mouse.getPosition()) then
                    self.selectedRow = ir
@@ -86,33 +89,38 @@ local Gameboard = Entity:extend()
    end
 
    function Gameboard:addTileToInputRow(tile, rowNr)
-        local maxSize = rowNr
+        local placedTile = false
         
-        for i, square in ipairs(self.tileInput[rowNr]) do
-            if i == rowNr and (not square.free) then
-                for _, mSquare in pairs(self.minusRow) do
-                    if mSquare.free then
+        for _, square in pairs(self.tileInputSquare[rowNr]) do
+            local tileInserted = false
+            print(tostring(square.free))
+            if square.free then
+                local x, y = square:getPos()
+                print('Input row:' .. x, y)
+                print(tostring(tile.selected))
+                tile.input = true
+                tile.choosen = false
+                tile.placed = true
+                tile:setTarget(x, y, tile.id)
+                square.free = false
+                placedTile = true
+                break
+            end
+            
+            if not placedTile then
+                for _, mSquare in pairs(self.minusSquare) do
+                    if mSquare.free and not tile.placed then
                         local x, y = mSquare:getPos()
                         print('Minusrow: ' .. x, y)
                         tile.minus = true
                         tile.choosen = false
-                        mSquare.free = false
+                        tile.placed = true
                         tile:setTarget(x, y, tile.id)
-                        
-                        
+                        mSquare.free = false
+                        placedTile = true
+                        break
                     end
                 end
-            end
-            
-            if square.free then
-                local x, y = square:getPos()
-                print('Input row:' .. x, y)
-                tile.input = true
-                tile.choosen = false
-                square.free = false
-                tile:setTarget(x, y, tile.id)
-                
-                break
             end
         end
 
@@ -124,19 +132,19 @@ local Gameboard = Entity:extend()
         love.graphics.print('Selected row: ' .. self.selectedRow, self.x, self.y, 0, 1, 1, self.width * .5 - 10, self.height * .5 -25)
         love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
         love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
-        for _, row  in ipairs(self.tileMatrix) do
+        for _, row  in ipairs(self.squareMatrix) do
             for _, square in pairs(row) do
                 love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
                 -- print(square.x, square.y)
             end
         end
-        for _, row  in ipairs(self.tileInput) do
+        for _, row  in ipairs(self.tileInputSquare) do
             for _, square in pairs(row) do
                 love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
                 -- print(square.x, square.y)
             end
         end
-        for _, square in pairs(self.minusRow) do
+        for _, square in pairs(self.minusSquare) do
             love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
             -- print(square.x, square.y)
         end
@@ -169,7 +177,7 @@ end
             table.insert(grid, sRow)
             y_pos = y_pos + 50
         end
-        self.tileMatrix = grid
+        self.squareMatrix = grid
     end
 
     function Gameboard:initTileInput()
@@ -180,18 +188,18 @@ end
                         {3, 4, 5, 1},
                         {2, 3, 4, 5, 1}}
         local grid = {}
-        for _, row in ipairs(matrix) do
+        for j, row in ipairs(matrix) do
             local x_pos = (self.width * .5) - self.offsetX
             local sRow = {}
-            for _, type in pairs(row) do
+            for i, type in ipairs(row) do
                 local square = Square(x_pos, y_pos, type)
-                table.insert(sRow, square)
+                sRow[i] = square
                 x_pos = x_pos - 50
             end
-            table.insert(grid, sRow)
+            grid[j] = sRow
             y_pos = y_pos + 50
         end
-        self.tileInput = grid
+        self.tileInputSquare = grid
         
     end
     
@@ -203,7 +211,7 @@ end
         for number = 1, 7 do
             
             local square = Square(x_pos, y_pos, type)
-            table.insert(self.minusRow, square)
+            table.insert(self.minusSquare, square)
             x_pos = x_pos - 50
         end
         
@@ -224,10 +232,10 @@ end
     function Gameboard:insertTiles(tiles)
         for index = 1 , #tiles do
             if index <= #tiles then
-                self.tileInput[self.selectedRow] = tiles[index].id
+                self.tileInputSquare[self.selectedRow] = tiles[index].id
             else
                 for _, tile in pairs(tiles) do
-                    table.insert(self.minusRow, tile.id)
+                    table.insert(self.minusSquare, tile.id)
                 end
             end
         end

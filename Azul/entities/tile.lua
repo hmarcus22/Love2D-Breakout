@@ -33,11 +33,15 @@ local Tile = Entity:extend()
         self.choosen = false
         self.minus = false
         self.input = false
-        self.score = false
+        self.placed = false
         self.targetX = self.body:getX()
         self.targetY = self.body:getY()
         self.speed = 15
-
+        self.transform = nil
+        self.rotation = 0
+        self.idle = true
+        self.skewX = 0
+        self.skewY = 0
     end
 
     function Tile:setPos(x, y, id)
@@ -59,19 +63,24 @@ local Tile = Entity:extend()
 
     function Tile:update(dt)
         --Check if mouse over
-        if self.fixture:testPoint(love.mouse.getPosition()) then
+        if self.fixture:testPoint(love.mouse.getPosition()) and not self.placed then
             self.mouseOver = true
+            
             -- print('MouseOver!')
         else
             self.mouseOver = false
+            self.idle = true
         end
         --Set scale
         if self.highlight and self.mouseOver then
             self.scaleT = .6
+            self.idle = false
         else if self.highlight then
             self.scaleT = .55
+            self.idle = false
         else
             self.scaleT = .5
+            self.idle = true
         end
         end
 
@@ -85,7 +94,7 @@ local Tile = Entity:extend()
        
         --Handle mouse click interaction
         if state.left_mouse_click then
-            if self.fixture:testPoint(love.mouse.getPosition()) then
+            if self.fixture:testPoint(love.mouse.getPosition()) and not self.placed then
                 self.selected = not self.selected
             end
         end
@@ -101,6 +110,17 @@ local Tile = Entity:extend()
         --     self.y = y
         -- end
 
+        --Transform
+        if self.idle then
+            self.rotation = self.rotation + dt * 0.5
+            self.skewX = math.sin(self.rotation) * 0.2
+            self.skewY = math.sin(self.rotation + ((math.pi /2))) * 0.1
+           
+        else
+            self.rotation = 0
+            self.skewX = 0
+            self.skewY = 0
+        end
     end
 
     function Tile:draw()
@@ -108,6 +128,10 @@ local Tile = Entity:extend()
             local self_x, self_y = self.body:getWorldCenter()
             love.graphics.setColor(state.palette[self.tType])
             -- love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
+            love.graphics.push()
+            -- if self.idle then
+            --     love.graphics.applyTransform(self.transform)
+            -- end
             love.graphics.draw(
                 self.texture, 
                 self_x, 
@@ -115,10 +139,13 @@ local Tile = Entity:extend()
                 0,      -- Rotation
                 self.scale,     -- Scale factor x
                 self.scale,     -- Scale factor y
-                self.texture:getWidth()/2, 
-                self.texture:getHeight()/2
+                self.texture:getWidth()/2,
+                self.texture:getHeight()/2,
+                self.skewX,
+                self.skewY
             )
-                love.graphics.setColor(state.palette[5])  -- White
+            love.graphics.pop()
+            love.graphics.setColor(state.palette[5])  -- White
             love.graphics.print('O: ' .. tostring(self.owner.nr), self.body:getX() - 20, self.body:getY())
         end
     end
