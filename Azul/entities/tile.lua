@@ -75,12 +75,12 @@ local Tile = Entity:extend()
         if self.highlight and self.mouseOver then
             self.scaleT = .6
             self.idle = false
-        elseif self.highlight then
+        elseif self.highlight and not self.choosen then
             self.scaleT = .55
             self.idle = false
-        elseif self.choosen then
-            self.scaleT = .3
-            self.idle = false
+        -- elseif self.choosen and self.highlight then
+        --     self.scaleT = .5
+        --     self.idle = false
         else
             self.scaleT = .5
             self.idle = true
@@ -115,16 +115,16 @@ local Tile = Entity:extend()
         -- end
 
         --Transform
-        if self.idle then
-            self.rotation = self.rotation + dt * 0.5
-            self.skewX = math.sin(self.rotation) * 0.2
-            self.skewY = math.sin(self.rotation + ((math.pi /2))) * 0.1
+        -- if self.idle then
+        --     self.rotation = self.rotation + dt * 0.5
+        --     self.skewX = math.sin(self.rotation) * 0.2
+        --     self.skewY = math.sin(self.rotation + ((math.pi /2))) * 0.1
            
-        else
-            self.rotation = 0
-            self.skewX = 0
-            self.skewY = 0
-        end
+        -- else
+        --     self.rotation = 0
+        --     self.skewX = 0
+        --     self.skewY = 0
+        -- end
     end
 
     function Tile:draw()

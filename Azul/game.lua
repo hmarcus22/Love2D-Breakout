@@ -50,11 +50,13 @@ function game:update(dt)
                     tile.selected = false
                     tile.choosen = true
                     
+                    
                 elseif owner == tile.owner and not tile.placed then
                     --Else add to discard
                     
                     tile:setOwner(discard)
                     tile.selected = false
+                    
                 end
             end
         end

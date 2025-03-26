@@ -1,6 +1,8 @@
 local Entity = require "entities/entity"
 local Square = require "entities/square"
 local state = require "state"
+local inputRow = require "entities/input_row"
+local SquareRow = require "entities/square_row"
 
 local Gameboard = Entity:extend()
 
@@ -10,9 +12,15 @@ local Gameboard = Entity:extend()
         self.squareMatrix = nil
         self.tileMatrix = {}
         self.tileInputSquare = nil -- upp to 5 tiles
-        self.tileInputRow = {}
+        self.tileInputRow = {
+            inputRow(1),
+            inputRow(2),
+            inputRow(3),
+            inputRow(4),
+            inputRow(5)
+        }
         self.minusSquare = {} -- 7 tiles
-        self.minusRow = {}
+        self.minusRow = {inputRow(7)}
         self.minusRowCount = 0
         self.selectedTiles =  {}
         self.selectedRow = 0
@@ -31,16 +39,18 @@ local Gameboard = Entity:extend()
         self.isRow = false
     end
     
+    
     function Gameboard:update(dt)
         --If choosen chase mouse
        --Set target
        local tileCount = 0
-       local step = 60
+       local step = 50
        for _, tile in pairs(self.ownedEntities) do
            if tile.choosen then
-               tileCount = tileCount +1
-               local offX = tileCount * step
-               tile.targetX = love.mouse.getX() - offX
+                local offX = tileCount * step
+                tileCount = tileCount +1
+               
+               tile.targetX = love.mouse.getX() - offX - 30
                tile.targetY = love.mouse.getY()
            
                
@@ -51,12 +61,32 @@ local Gameboard = Entity:extend()
           if self.selectedRow >= 1 and state.left_mouse_click then
             for _, tile in pairs(self.ownedEntities) do
               if tile.choosen then
-                  self:addTileToInputRow(tile, self.selectedRow)
+                    if not self.tileInputRow[self.selectedRow]:isFull() then
+                        
+                        local col = self.tileInputRow[self.selectedRow]:size() + 1
+                        local x, y = self.tileInputSquare[self.selectedRow][col]:getPos()
+                        print(x, y)
+                        print('tile added to input! ' .. self.tileInputRow[self.selectedRow]:size())
+                        tile:setTarget(x, y, tile.id)
+                        
+                        self.tileInputRow[self.selectedRow]:add(tile)
+                        print('tile added to input! ' .. self.tileInputRow[self.selectedRow]:size())
+                    else
+                        local col = self.minusRow[1]:size() + 1
+                        local x, y = self.minusSquare[col]:getPos()
+                        tile:setTarget(x, y, tile.id)
+                        self.minusRow[1]:add(tile)
+                        print('Tile added to minusrow!')
+                    end
+                    tile.choosen = false
+                    tile.highlight = false
+                    tile.placed = true
+                    
               end
             end
          end
 
-        --Chase target smoothly
+        --Tile Chase target smoothly
         if self.ownedEntities then
             for _, tile in pairs(self.ownedEntities) do
                 if tile.body:getX() ~= tile.targetX or tile.body:getY() ~= tile.targetY then
@@ -72,6 +102,19 @@ local Gameboard = Entity:extend()
                 end
             end
         end
+
+        --Update tileposition in input and minus row
+        -- for row = 1, 5 do
+        --     for col = 1, row do
+        --         local x, y = self.tileInputSquare[row][col]:getPos()
+        --         print('square pos x: ' ..x .. 'y:'  .. y)
+        --         if not self.tileInputRow[row]:isEmpty() then
+        --             self.tileInputRow[row].row[col]:setTarget(x, y)
+        --             print('tile set to : ' .. self.tileInputRow[row].row[col]:getPos())
+        --         end
+                
+        --     end
+        -- end
        
        --Dectect wich row is selected
        self.selectedRow = 0

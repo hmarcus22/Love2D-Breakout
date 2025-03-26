@@ -11,7 +11,7 @@ local InputRow = Entity:extend()
 
     function InputRow:add(input)
         if self.count < self.maxSize then
-            self.array[self.count +1] = input
+            self.row[self.count +1] = input
             self.count = self.count + 1
             return true
         end
