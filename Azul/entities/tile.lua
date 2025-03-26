@@ -75,14 +75,18 @@ local Tile = Entity:extend()
         if self.highlight and self.mouseOver then
             self.scaleT = .6
             self.idle = false
-        else if self.highlight then
+        elseif self.highlight then
             self.scaleT = .55
+            self.idle = false
+        elseif self.choosen then
+            self.scaleT = .3
             self.idle = false
         else
             self.scaleT = .5
             self.idle = true
+
         end
-        end
+        
 
          --Smooth scaling
          if self.scale ~= self.scaleT then
