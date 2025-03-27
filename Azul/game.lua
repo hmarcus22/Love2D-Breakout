@@ -50,7 +50,6 @@ function game:update(dt)
                     tile.selected = false
                     tile.choosen = true
                     
-                    
                 elseif owner == tile.owner and not tile.placed then
                     --Else add to discard
                     
@@ -66,12 +65,8 @@ end
 -- Create tiles
 local tile_type = 1
 for number = 1, 100 do
-    
-    -- print(tile_type)
     local tile = Tile(tile_type, 50, 50)
     table.insert(tiles, tile)
-    -- tile:setOwner(game)
-    -- print('Created tile of typ: ' .. tile_type)
     tile_type = tile_type + 1
     if tile_type >= 6 then
         tile_type = 1
@@ -126,9 +121,6 @@ function func.fillBuckets()
                 -- Assign tile to bucket
                 selectedTile:setOwner(bucket)
                 selectedTile:setInplay()
-                
-                
-                -- print(string.format('Assigned tile: ' .. selectedTile.id .. ' to bucket: ' .. bucket.nr))
             end
         end
         
@@ -140,30 +132,6 @@ function func.fillBuckets()
         print(bucket.radius)
     end
 end
-
---Add Gameboards
-for number = 1,  state.nrPlayers do
-
-
-end
-
-
--- function func.checkBuckets()
---     local x, y = 50, 50
---     for _, bucket in pairs(buckets) do
---         for _, tile in pairs(bucket.ownedEntities) do
---             local x, y = bucket.body:getPosition()          
---         end
---     end
--- end
     func.fillBuckets()
-    -- func.checkBuckets()
-
-
-
-
--- for _, bucket in ipairs(buckets) do
---     bucket:printOwnedEntities()
--- end
 
 return game

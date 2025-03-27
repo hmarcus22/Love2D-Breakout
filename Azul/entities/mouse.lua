@@ -17,8 +17,7 @@ local Mouse = Object:extend()
     end
 
     function Mouse:update(dt)
-        
-        -- self.body:setPosition(love.mouse:getPosition()) 
+         
     end
 
     return Mouse

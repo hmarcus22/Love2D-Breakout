@@ -79,15 +79,12 @@ local Tile = Entity:extend()
             self.idle = true
 
         end
-        
 
          --Smooth scaling
          if self.scale ~= self.scaleT then
             local ds = self.scaleT - self.scale
             self.scale = self.scale + ds * self.scaleSpeed * dt
         end
-
-       
        
         --Handle mouse click interaction
         if state.left_mouse_click then

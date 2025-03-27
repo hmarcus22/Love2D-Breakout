@@ -174,12 +174,12 @@ local Gameboard = Entity:extend()
 end
     
     function Gameboard:initBoard()
-        self:initTileMatrix()
-        self:initTileInput()
-        self:initMinusRow()
+        self:initSquareMatrix()
+        self:initTileInputSquare()
+        self:initMinusSquare()
     end
     
-    function Gameboard:initTileMatrix()
+    function Gameboard:initSquareMatrix()
         local y_pos = 420
         local matrix = {{1, 2, 3, 4, 5},
                         {5, 1, 2, 3, 4},
@@ -201,7 +201,7 @@ end
         self.squareMatrix = grid
     end
 
-    function Gameboard:initTileInput()
+    function Gameboard:initTileInputSquare()
         local y_pos = 420
         local matrix = {{1},
                         {5, 1},
@@ -224,7 +224,7 @@ end
         
     end
     
-    function Gameboard:initMinusRow()
+    function Gameboard:initMinusSquare()
         local y_pos = 725
 
         local matrix = {1, 2, 3, 4, 5, 6, 7}
@@ -235,42 +235,19 @@ end
             table.insert(self.minusSquare, square)
             x_pos = x_pos - 50
         end
-        
-        
-    end
-
-    -- Untested
-    function Gameboard:insertTiles(tiles)
-        for index = 1 , #tiles do
-            if index <= #tiles then
-                self.tileInputSquare[self.selectedRow] = tiles[index].id
-            else
-                for _, tile in pairs(tiles) do
-                    table.insert(self.minusSquare, tile.id)
-                end
-            end
-        end
     end
 
     function Gameboard:resolveBoard()
 
-        
     end
 
-    
-
-   
-
     function Gameboard:begin_contact()
-        print('contact!')
         self.contact = true
     end
 
     function Gameboard:end_contact()
-        
         self.contact = false
     end
-    
 
     return Gameboard
 
