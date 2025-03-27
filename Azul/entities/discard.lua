@@ -47,12 +47,9 @@ local Discard = Entity:extend()
             
                 local tileIndex = 1
             for _, tile in pairs(self.ownedEntities) do
-                -- if tile:is(Tile) then
                     local x, y = self:calculateTilePosition(tileIndex)
-                    -- print('Updateing bodys owned entities position to x: ' .. x .. ' y: ' .. y)
                     tile:setTarget(x, y, tile.id)
                     tileIndex = tileIndex + 1
-                -- end
             end
             
         end
@@ -81,9 +78,7 @@ local Discard = Entity:extend()
             if self.ownedEntities then
                 local count = 0
                 for _, tile in pairs(self.ownedEntities)do
-                    
                         count = count + 1
-                    
                 end
                 self.owned = count
             end
@@ -123,20 +118,14 @@ local Discard = Entity:extend()
         return x, y
     end
     function Discard:setOwnedEntityPos()
-        -- if self.id == id then
             print('Bucket nr: ' .. self.nr)
             local tileIndex = 1
             for _, tile in pairs(self.ownedEntities) do
-                -- if tile:is(Tile) then
                     local x, y = self:calculateTilePosition(tileIndex)
                     print('Updateing bodys owned entities position to x: ' .. x .. ' y: ' .. y)
                     tile:setPos(x, y, tile.id)
                     tileIndex = tileIndex + 1
-                -- end
             end
-            
-        -- end
-
     end
 
     return Discard

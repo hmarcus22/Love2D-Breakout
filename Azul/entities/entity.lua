@@ -15,8 +15,6 @@ function Entity:setOwner(owner)
     
 
     -- Remove ownership from previous owner if exists
-    -- print(tostring('New owner ID: ' .. owner.id) .. ' ' .. tostring(owner:is(Entity)))
-    -- print(tostring('Old owner ID: ' .. self.id))
     if self.owner then
         self.owner:releaseEntity(self.id)
     end

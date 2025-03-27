@@ -61,27 +61,25 @@ local Gameboard = Entity:extend()
           if self.selectedRow >= 1 and state.left_mouse_click then
             for _, tile in pairs(self.ownedEntities) do
               if tile.choosen then
-                    if not self.tileInputRow[self.selectedRow]:isFull() then
-                        
+                -- Check if row is full    
+                if not self.tileInputRow[self.selectedRow]:isFull() then 
+                        --Check wich index is to be used
                         local col = self.tileInputRow[self.selectedRow]:size() + 1
+                        --Get position for index to be used
                         local x, y = self.tileInputSquare[self.selectedRow][col]:getPos()
-                        print(x, y)
-                        print('tile added to input! ' .. self.tileInputRow[self.selectedRow]:size())
+                        --Set tile position
                         tile:setTarget(x, y, tile.id)
-                        
+                        --Add tile to inputRow
                         self.tileInputRow[self.selectedRow]:add(tile)
-                        print('tile added to input! ' .. self.tileInputRow[self.selectedRow]:size())
-                    else
-                        local col = self.minusRow[1]:size() + 1
-                        local x, y = self.minusSquare[col]:getPos()
+                    else -- If no room in inputrow add to minusRow
+                        local x, y = self.minusSquare[1]:getPos()
                         tile:setTarget(x, y, tile.id)
                         self.minusRow[1]:add(tile)
-                        print('Tile added to minusrow!')
                     end
+                    --Uppdate states of tile
                     tile.choosen = false
                     tile.highlight = false
                     tile.placed = true
-                    
               end
             end
          end
@@ -90,12 +88,10 @@ local Gameboard = Entity:extend()
         if self.ownedEntities then
             for _, tile in pairs(self.ownedEntities) do
                 if tile.body:getX() ~= tile.targetX or tile.body:getY() ~= tile.targetY then
-                            
                     local dx = tile.targetX - tile.body:getX()
                     local dy = tile.targetY - tile.body:getY()
                     local newX = tile.body:getX() + dx * tile.speed * dt
                     local newY = tile.body:getY() + dy * tile.speed * dt
-                    
                     tile.body:setPosition(newX, newY)
                     tile.x = newX
                     tile.y = newY
@@ -103,19 +99,6 @@ local Gameboard = Entity:extend()
             end
         end
 
-        --Update tileposition in input and minus row
-        -- for row = 1, 5 do
-        --     for col = 1, row do
-        --         local x, y = self.tileInputSquare[row][col]:getPos()
-        --         print('square pos x: ' ..x .. 'y:'  .. y)
-        --         if not self.tileInputRow[row]:isEmpty() then
-        --             self.tileInputRow[row].row[col]:setTarget(x, y)
-        --             print('tile set to : ' .. self.tileInputRow[row].row[col]:getPos())
-        --         end
-                
-        --     end
-        -- end
-       
        --Dectect wich row is selected
        self.selectedRow = 0
        self.isRow = false
@@ -128,10 +111,10 @@ local Gameboard = Entity:extend()
                end
            end
        end
-
    end
 
    function Gameboard:addTileToInputRow(tile, rowNr)
+        
         local placedTile = false
         
         for _, square in pairs(self.tileInputSquare[rowNr]) do
@@ -166,7 +149,6 @@ local Gameboard = Entity:extend()
                 end
             end
         end
-
    end
 
    function Gameboard:draw()
@@ -178,18 +160,15 @@ local Gameboard = Entity:extend()
         for _, row  in ipairs(self.squareMatrix) do
             for _, square in pairs(row) do
                 love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
-                -- print(square.x, square.y)
             end
         end
         for _, row  in ipairs(self.tileInputSquare) do
             for _, square in pairs(row) do
                 love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
-                -- print(square.x, square.y)
             end
         end
         for _, square in pairs(self.minusSquare) do
             love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
-            -- print(square.x, square.y)
         end
     end
 end
@@ -198,7 +177,6 @@ end
         self:initTileMatrix()
         self:initTileInput()
         self:initMinusRow()
-        
     end
     
     function Gameboard:initTileMatrix()
@@ -259,16 +237,6 @@ end
         end
         
         
-    end
-    
-    function Gameboard:selecedtTiles()
-
-        
-    end
-    
-    function Gameboard:addTiles(tileSet, row)
-
-
     end
 
     -- Untested
