@@ -58,6 +58,7 @@ local Gameboard = Entity:extend()
            end
        end
           --Insert tiles to selected input row
+          self:getSelectedRow()
           if self.selectedRow >= 1 and state.left_mouse_click then
             for _, tile in pairs(self.ownedEntities) do
               if tile.choosen then
@@ -99,18 +100,24 @@ local Gameboard = Entity:extend()
             end
         end
 
-       --Dectect wich row is selected
-       self.selectedRow = 0
-       self.isRow = false
-       for ir, row in ipairs(self.tileInputSquare) do
-           for is, square in ipairs(row) do
-               if square.fixture:testPoint(love.mouse.getPosition()) then
-                   self.selectedRow = ir
-                   self.isRow = true
-                   break
-               end
-           end
-       end
+       
+   end
+
+   function Gameboard:getSelectedRow()
+
+    --Dectect wich row is selected
+    self.selectedRow = 0
+    self.isRow = false
+    for ir, row in ipairs(self.tileInputSquare) do
+        for is, square in ipairs(row) do
+            if square.fixture:testPoint(love.mouse.getPosition()) then
+                self.selectedRow = ir
+                self.isRow = true
+                break
+            end
+        end
+    end
+    
    end
 
    function Gameboard:addTileToInputRow(tile, rowNr)
@@ -221,13 +228,10 @@ end
             y_pos = y_pos + 50
         end
         self.tileInputSquare = grid
-        
     end
     
     function Gameboard:initMinusSquare()
         local y_pos = 725
-
-        local matrix = {1, 2, 3, 4, 5, 6, 7}
         local x_pos = (self.width * .5) + 180
         for number = 1, 7 do
             
