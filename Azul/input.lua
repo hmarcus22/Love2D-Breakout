@@ -23,17 +23,17 @@ local input = Object:extend()
            
         end
         
-        print('Left Release:', state.left_mouse_click)
+        -- print('Left Release:', state.left_mouse_click)
         old_mouse_click = state.right_mouse_click
         if button == 2 and old_mouse_click then
             state.right_mouse_click = false
             
         end 
-        print('Right Release:', state.right_mouse_click)
+        -- print('Right Release:', state.right_mouse_click)
     end
 
     function input:mousePress(button)
-        print('Pressed button: ', button)
+        -- print('Pressed button: ', button)
         if button == 1 then
             state.left_mouse_click = true
             
@@ -42,8 +42,8 @@ local input = Object:extend()
             
         end
         
-        print('Left Click: ', state.left_mouse_click)
-        print('Right Click: ', state.right_mouse_click)
+        -- print('Left Click: ', state.left_mouse_click)
+        -- print('Right Click: ', state.right_mouse_click)
     end
    
     function input.releaseFunc.escape()

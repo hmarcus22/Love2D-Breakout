@@ -7,12 +7,18 @@ local InputRow = Entity:extend()
         self.maxSize = maxSize
         self.row = {}
         self.count = 0
+        self.notFull = true
     end
 
     function InputRow:add(input)
         if self.count < self.maxSize then
             self.row[self.count +1] = input
             self.count = self.count + 1
+            if self.count == self.maxSize then
+                self.notFull = false
+            else
+                self.notFull = true
+            end
             return true
         end
         return false

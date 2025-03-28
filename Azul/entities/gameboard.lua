@@ -3,6 +3,7 @@ local Square = require "entities/square"
 local state = require "state"
 local inputRow = require "entities/input_row"
 local SquareRow = require "entities/square_row"
+local Button = require "entities/button"
 
 local Gameboard = Entity:extend()
 
@@ -38,6 +39,7 @@ local Gameboard = Entity:extend()
         self.selectedRow = 0
         self.isRow = false
         self.z = 2
+        
     end
     
     
@@ -90,14 +92,16 @@ local Gameboard = Entity:extend()
         --Tile Chase target smoothly
         if self.ownedEntities then
             for _, tile in pairs(self.ownedEntities) do
-                if tile.body:getX() ~= tile.targetX or tile.body:getY() ~= tile.targetY then
-                    local dx = tile.targetX - tile.body:getX()
-                    local dy = tile.targetY - tile.body:getY()
-                    local newX = tile.body:getX() + dx * tile.speed * dt
-                    local newY = tile.body:getY() + dy * tile.speed * dt
-                    tile.body:setPosition(newX, newY)
-                    tile.x = newX
-                    tile.y = newY
+                if not tile:is(Button) then
+                    if tile.body:getX() ~= tile.targetX or tile.body:getY() ~= tile.targetY then
+                        local dx = tile.targetX - tile.body:getX()
+                        local dy = tile.targetY - tile.body:getY()
+                        local newX = tile.body:getX() + dx * tile.speed * dt
+                        local newY = tile.body:getY() + dy * tile.speed * dt
+                        tile.body:setPosition(newX, newY)
+                        tile.x = newX
+                        tile.y = newY
+                    end
                 end
             end
         end
@@ -148,6 +152,7 @@ end
         self:initSquareMatrix()
         self:initTileInputSquare()
         self:initMinusSquare()
+        
     end
     
     function Gameboard:initSquareMatrix()

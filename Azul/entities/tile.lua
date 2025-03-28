@@ -105,7 +105,7 @@ local Tile = Entity:extend()
         if self.inPlay then
             local self_x, self_y = self.body:getWorldCenter()
             love.graphics.setColor(state.palette[self.tType])
-            love.graphics.push()
+            -- love.graphics.push()
             love.graphics.draw(
                 self.texture, 
                 self_x, 
@@ -118,7 +118,7 @@ local Tile = Entity:extend()
                 self.skewX,
                 self.skewY
             )
-            love.graphics.pop()
+            -- love.graphics.pop()
             love.graphics.setColor(state.palette[5])  -- White
             love.graphics.print('O: ' .. tostring(self.owner.nr), self.body:getX() - 20, self.body:getY())
         end

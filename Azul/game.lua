@@ -6,6 +6,7 @@ local Bucket = require "entities/bucket"
 local Gameboard = require "entities/gameboard"
 local Discard = require "entities/discard"
 local DrawOrder = require "entities/draworder"
+local Button = require "entities/button"
 
 
 -- local tile_ = require "entities/tile_"
@@ -19,6 +20,7 @@ local func = {}
 local tiles = {}
 local buckets = {}
 local gameboards = {}
+local buttons = {}
 local drawOrder = DrawOrder()
 
 function game:drawAll()
@@ -30,6 +32,7 @@ function game:update(dt)
     if not drawOrder:isEmpty() then
         drawOrder:update(dt)
     end
+    
     if state.left_mouse_click then
         local tType = 0
         local owner = nil
@@ -39,7 +42,6 @@ function game:update(dt)
                 tType = tile.tType
                 owner = tile.owner
                 isSelected = true
-
                 break
             end
         end
@@ -51,7 +53,7 @@ function game:update(dt)
         --Set owner for all of same tType and discard the rest
         if isSelected then
             for _, tile in pairs(tiles) do
-                if tile.highlight and not tile.placed then
+                if tile.highlight and not tile.placed and tile.tType == tType then
                     
                     tile:setOwner(gameboards[state.curentPlayer])
                     tile.selected = false
@@ -100,6 +102,11 @@ for number = 1,  state.nrPlayers do
     table.insert(gameboards, gameboard)
     gameboard:setOwner(game)
 end
+
+--Create test button
+local doneButton = Button(900, 450, 100, 40, 'Done')
+doneButton:setOwner(game)
+table.insert(buttons, doneButton)
 
 
 -- Add tiles to buckets to be put in game init?
