@@ -30,13 +30,10 @@ local Button = Entity:extend()
         else
         self.clicked = false
         end
-        
-        
     end
 
     function Button:draw()
         love.graphics.setColor(state.palette[1])
-       
         love.graphics.rectangle('fill', self.x - (self.width/2), self.y - (self.height/2), self.width, self.height, 5, 5)
         love.graphics.setColor(state.palette[5])
         love.graphics.rectangle('line', self.x - (self.width/2), self.y - (self.height/2), self.width, self.height, 5, 5)
