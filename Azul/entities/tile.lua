@@ -86,6 +86,12 @@ local Tile = Entity:extend()
             local ds = self.scaleT - self.scale
             self.scale = self.scale + ds * self.scaleSpeed * dt
         end
+
+        if self.choosen then
+            self.z = 1
+        else
+            self.z = 2
+        end
        
         --Handle mouse click interaction
         if state.left_mouse_click then

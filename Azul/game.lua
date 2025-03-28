@@ -5,7 +5,7 @@ local state = require "state"
 local Bucket = require "entities/bucket"
 local Gameboard = require "entities/gameboard"
 local Discard = require "entities/discard"
-
+local DrawOrder = require "entities/draworder"
 
 
 -- local tile_ = require "entities/tile_"
@@ -19,10 +19,17 @@ local func = {}
 local tiles = {}
 local buckets = {}
 local gameboards = {}
+local drawOrder = DrawOrder()
 
+function game:drawAll()
+    drawOrder:drawOrderly()
+end
 
 function game:update(dt)
     --find selected tileType
+    if not drawOrder:isEmpty() then
+        drawOrder:update(dt)
+    end
     if state.left_mouse_click then
         local tType = 0
         local owner = nil
@@ -133,5 +140,12 @@ function func.fillBuckets()
     end
 end
     func.fillBuckets()
+
+    for _, entity in pairs(game.ownedEntities) do
+        drawOrder:add(entity)
+    end
+    for _, entity in pairs(tiles) do
+        drawOrder:add(entity)
+    end
 
 return game

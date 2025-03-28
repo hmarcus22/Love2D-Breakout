@@ -37,6 +37,7 @@ local Gameboard = Entity:extend()
         self.offsetX = 80
         self.selectedRow = 0
         self.isRow = false
+        self.z = 2
     end
     
     
