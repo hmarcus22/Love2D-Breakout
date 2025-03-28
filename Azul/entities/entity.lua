@@ -9,6 +9,8 @@ function Entity:new()
         self.owner = nil
         self.ownedEntities = {}
         self.components = {}
+        self.z = 0
+        self.maxZ = 5
 end
 
 function Entity:setOwner(owner)
@@ -85,13 +87,21 @@ function Entity:draw()
 end
 
 function Entity:drawAll()
-    -- Draw this entity first
-    self:draw()
-    
-    -- Then draw all owned entities
-    if self.ownedEntities then
-        for _, ownedEntity in pairs(self.ownedEntities) do
-            ownedEntity:drawAll()
+    --Decide draw order experiment
+    for number = 0, self.maxZ do
+        -- Draw this entity first
+        if self.z == number then
+            self:draw()
+        end
+        
+        if self.z == number then
+            
+            -- Then draw all owned entities
+            if self.ownedEntities then
+                for _, ownedEntity in pairs(self.ownedEntities) do
+                    ownedEntity:drawAll()
+                end
+            end
         end
     end
 end

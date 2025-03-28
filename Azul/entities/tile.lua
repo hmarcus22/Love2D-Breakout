@@ -42,6 +42,7 @@ local Tile = Entity:extend()
         self.idle = true
         self.skewX = 0
         self.skewY = 0
+        self.z = 2
     end
 
     function Tile:setPos(x, y, id)

@@ -25,6 +25,7 @@ local Bucket = Entity:extend()
         self.texture = love.graphics.newImage('img/bucket.png')
         self.tType = 0
         self.discard = discard or false
+        self.z = 4
     end
 
     function Bucket:update(dt)

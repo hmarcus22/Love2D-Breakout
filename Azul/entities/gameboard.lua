@@ -73,7 +73,8 @@ local Gameboard = Entity:extend()
                         --Add tile to inputRow
                         self.tileInputRow[self.selectedRow]:add(tile)
                     else -- If no room in inputrow add to minusRow
-                        local x, y = self.minusSquare[1]:getPos()
+                        local col = self.minusRow[1]:size() + 1
+                        local x, y = self.minusSquare[col]:getPos()
                         tile:setTarget(x, y, tile.id)
                         self.minusRow[1]:add(tile)
                     end
@@ -118,44 +119,6 @@ local Gameboard = Entity:extend()
         end
     end
     
-   end
-
-   function Gameboard:addTileToInputRow(tile, rowNr)
-        
-        local placedTile = false
-        
-        for _, square in pairs(self.tileInputSquare[rowNr]) do
-            local tileInserted = false
-            print(tostring(square.free))
-            if square.free then
-                local x, y = square:getPos()
-                print('Input row:' .. x, y)
-                print(tostring(tile.selected))
-                tile.input = true
-                tile.choosen = false
-                tile.placed = true
-                tile:setTarget(x, y, tile.id)
-                square.free = false
-                placedTile = true
-                break
-            end
-            
-            if not placedTile then
-                for _, mSquare in pairs(self.minusSquare) do
-                    if mSquare.free and not tile.placed then
-                        local x, y = mSquare:getPos()
-                        print('Minusrow: ' .. x, y)
-                        tile.minus = true
-                        tile.choosen = false
-                        tile.placed = true
-                        tile:setTarget(x, y, tile.id)
-                        mSquare.free = false
-                        placedTile = true
-                        break
-                    end
-                end
-            end
-        end
    end
 
    function Gameboard:draw()

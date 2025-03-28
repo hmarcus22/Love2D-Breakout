@@ -26,6 +26,7 @@ local Discard = Entity:extend()
         self.tType = 0
         self.discard = discard or false
         self.owned = 0
+        self.z = 3
     end
 
     function Discard:update(dt)
