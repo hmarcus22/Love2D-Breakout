@@ -97,6 +97,7 @@ local Tile = Entity:extend()
         if state.left_mouse_click then
             if self.fixture:testPoint(love.mouse.getPosition()) and not self.placed then
                 self.selected = not self.selected
+                -- state.update = true
             end
         end       
     end

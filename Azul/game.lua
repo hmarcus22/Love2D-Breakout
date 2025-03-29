@@ -29,8 +29,9 @@ end
 
 function game:update(dt)
     --find selected tileType
-    if not drawOrder:isEmpty() then
+    if not drawOrder:isEmpty() and state.update then
         drawOrder:update(dt)
+        state.update = false
     end
     
     if state.left_mouse_click then
@@ -67,6 +68,7 @@ function game:update(dt)
                     
                 end
             end
+            state.update = true
         end
     end
 end

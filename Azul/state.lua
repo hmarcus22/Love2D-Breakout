@@ -6,6 +6,7 @@ return {
     curentPlayer = 1,
     left_mouse_click = false,
     right_mouse_click = false,
+    update = false,
     palette = {
         {.4, .4, 1, .9}, -- Blue
         {1, 1, .4, .9}, -- Yellow
