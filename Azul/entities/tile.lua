@@ -99,7 +99,13 @@ local Tile = Entity:extend()
                 self.selected = not self.selected
                 -- state.update = true
             end
-        end       
+        end
+
+        --Idle animations
+        if self.idle then
+            
+        end
+
     end
 
     function Tile:draw()
@@ -121,7 +127,8 @@ local Tile = Entity:extend()
             )
             -- love.graphics.pop()
             love.graphics.setColor(state.palette[5])  -- White
-            love.graphics.print('O: ' .. tostring(self.owner.nr), self.body:getX() - 20, self.body:getY())
+            -- love.graphics.print('O: ' .. tostring(self.owner.nr), self.body:getX() - 20, self.body:getY())
+            love.graphics.printf(self.tType, self.body:getX(), self.body:getY(), self.size, 'center', 0, 2, 2, self.size/2, self.size/6)
         end
     end
 

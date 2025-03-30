@@ -131,10 +131,11 @@ local Gameboard = Entity:extend()
         love.graphics.print('Player' .. self.player, self.x, self.y, 0, 1, 1, self.width * .5 - 10, self.height * .5 -10)
         love.graphics.print('Selected row: ' .. self.selectedRow, self.x, self.y, 0, 1, 1, self.width * .5 - 10, self.height * .5 -25)
         love.graphics.polygon('line', self.body:getWorldPoints(self.shape:getPoints()))
-        love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
+        -- love.graphics.print(tostring(self.contact), self.x + 40, self.y - 40)
         for _, row  in ipairs(self.squareMatrix) do
             for _, square in pairs(row) do
                 love.graphics.polygon('line', square.body:getWorldPoints(square.shape:getPoints()))
+                love.graphics.printf(square.tType, square.body:getX(), square.body:getY(), square.width, 'center', 0, 2, 2, square.width/2, square.width/6)
             end
         end
         for _, row  in ipairs(self.tileInputSquare) do

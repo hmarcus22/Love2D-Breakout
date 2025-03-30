@@ -106,7 +106,7 @@ for number = 1,  state.nrPlayers do
 end
 
 --Create test button
-local doneButton = Button(900, 450, 100, 40, 'Done')
+local doneButton = Button(900, 450, 100, 40, 'Resolve')
 doneButton:setOwner(game)
 table.insert(buttons, doneButton)
 
