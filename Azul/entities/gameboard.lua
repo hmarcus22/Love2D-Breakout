@@ -62,11 +62,11 @@ local Gameboard = Entity:extend()
        end
           --Insert tiles to selected input row
           self:getSelectedRow()
-          if self.selectedRow >= 1 and state.left_mouse_click then
+          if self.selectedRow >= 1 and self.selectedRow <= 5 and state.left_mouse_click then
             for _, tile in pairs(self.ownedEntities) do
               if tile.choosen then
                 -- Check if row is full    
-                if not self.tileInputRow[self.selectedRow]:isFull() then 
+                if not self.tileInputRow[self.selectedRow]:isFull() then
                         --Check wich index is to be used
                         local col = self.tileInputRow[self.selectedRow]:size() + 1
                         --Get position for index to be used
@@ -87,7 +87,22 @@ local Gameboard = Entity:extend()
                     tile.placed = true
               end
             end
-         end
+        --Insert Tiles directly to minusRow
+        elseif self.selectedRow == 6 and state.left_mouse_click then
+            for _, tile in pairs(self.ownedEntities) do
+                if tile.choosen then
+                    if not self.minusRow[1]:isFull() then
+                        local col = self.minusRow[1]:size() + 1
+                        local x, y = self.minusSquare[col]:getPos()
+                        tile:setTarget(x, y, tile.id)
+                        self.minusRow[1]:add(tile)
+                    end
+                    tile.choosen = false
+                    tile.highlight = false
+                    tile.placed = true
+                end
+            end
+        end
 
         --Tile Chase target smoothly
         if self.ownedEntities then
@@ -111,18 +126,24 @@ local Gameboard = Entity:extend()
 
    function Gameboard:getSelectedRow()
 
-    --Dectect wich row is selected
-    self.selectedRow = 0
-    self.isRow = false
-    for ir, row in ipairs(self.tileInputSquare) do
-        for is, square in ipairs(row) do
-            if square.fixture:testPoint(love.mouse.getPosition()) then
-                self.selectedRow = ir
-                self.isRow = true
-                break
+        --Dectect wich row is selected
+        self.selectedRow = 0
+        self.isRow = false
+        for ir, row in ipairs(self.tileInputSquare) do
+            for is, square in ipairs(row) do
+                if square.fixture:testPoint(love.mouse.getPosition()) then
+                    self.selectedRow = ir
+                    self.isRow = true
+                    break
+                end
             end
         end
-    end
+        for mr, square in ipairs(self.minusSquare) do
+            if square.fixture:testPoint(love.mouse.getPosition()) then
+                self.selectedRow = 6
+                self.isRow = true
+            end
+        end
     
    end
 
