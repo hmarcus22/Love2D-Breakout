@@ -124,6 +124,10 @@ local Gameboard = Entity:extend()
        
    end
 
+   function Gameboard:resolve()
+    
+   end
+
    function Gameboard:getSelectedRow()
 
         --Dectect wich row is selected
