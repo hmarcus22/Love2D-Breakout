@@ -14,7 +14,7 @@ function Box:new(x, y, width, height)
     self.palette = {
         {0, 0, 0, 1},   --Black, Outline
         {0, 0, 0, .3},  --Shade, shading
-        {.2, 1, .2, 1} --Green, bodycolor        
+        {.2, 1, .2, 1}  --Green, bodycolor        
     }
     self.lineWidth = 5
     
@@ -25,15 +25,15 @@ function Box:draw()
     local o = self.lineWidth
     -- love.graphics.setLineStyle("rough")
     love.graphics.setLineWidth( o )
-    --Draw outline
-    -- love.graphics.setColor = self.palette[1]
-    -- love.graphics.polygon('line', x1, y1, x2, y2, x3, y3, x4, y4)
     --Draw body
-    love.graphics.setColor = self.palette[3]
+    love.graphics.setColor(self.palette[3])
+    love.graphics.polygon('fill', x1, y1, x2, y2, x3, y3, x4, y4)
+    -- Draw outline
+    love.graphics.setColor(self.palette[1])
     love.graphics.polygon('line', x1, y1, x2, y2, x3, y3, x4, y4)
     --Draw shade
-    -- love.graphics.setColor = self.palette[2]
-    -- love.graphics.polygon('line', x1 + o, y1 + o, x2 - o, y2 + o, x3 - o, y3 -o, x4 + o, y4 - o)
+    love.graphics.setColor(self.palette[2])
+    love.graphics.polygon('line', x1 + o, y1 + o, x2 - o, y2 + o, x3 - o, y3 -o, x4 + o, y4 - o)
 
 
 end

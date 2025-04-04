@@ -1,5 +1,5 @@
 local Entity = require "entities/entity"
-local world = require "draw_box.world"
+local world = require "world"
 local state = require "state"
 
 local Button = Entity:extend()

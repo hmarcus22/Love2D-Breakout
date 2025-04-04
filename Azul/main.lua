@@ -1,15 +1,12 @@
 local game = require('game')
 local input = require "input"
-local Object = require "classic"
 local state = require "state"
-local world = require "draw_box.world"
+local world = require "world"
 
 
 
 function love.load()
     math.randomseed(state.seed)
-    -- entities:fillBuckets()
-    
 end
 
 function love.keyreleased(key, code)
