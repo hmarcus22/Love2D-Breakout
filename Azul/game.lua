@@ -8,9 +8,6 @@ local Discard = require "entities/discard"
 local DrawOrder = require "entities/draworder"
 local Button = require "entities/button"
 
-
--- local tile_ = require "entities/tile_"
-
 math.randomseed(state.seed)
 
 local game = Entity()
@@ -18,6 +15,7 @@ local discard = Discard(state.nrBuckets +1, 540, 250, true )
 discard:setOwner(game)
 local func = {}
 local tiles = {}
+local tileDiscard = {}
 local buckets = {}
 local gameboards = {}
 local buttons = {}
