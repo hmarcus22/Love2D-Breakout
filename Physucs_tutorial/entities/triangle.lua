@@ -1,4 +1,4 @@
-local world = require('world')
+local world = require('draw_box.world')
 
 local triangle = {}
 triangle.body = love.physics.newBody(world, 200, 200, 'dynamic')

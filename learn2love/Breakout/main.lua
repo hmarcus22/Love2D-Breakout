@@ -1,5 +1,5 @@
 local entities = require('entities')
-local world = require('world')
+local world = require('draw_box.world')
 local input = require('input')
 local state = require('state')
 

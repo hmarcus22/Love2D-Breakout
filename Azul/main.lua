@@ -2,7 +2,7 @@ local game = require('game')
 local input = require "input"
 local Object = require "classic"
 local state = require "state"
-local world = require "world"
+local world = require "draw_box.world"
 
 
 

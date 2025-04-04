@@ -1,5 +1,5 @@
 local Object = require "classic"
-local world = require "world"
+local world = require "draw_box.world"
 local state = require "state"
 
 local Mouse = Object:extend()

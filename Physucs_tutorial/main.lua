@@ -1,6 +1,6 @@
 local bar = require('entities/bar')
 local triangle = require('entities/triangle')
-local world = require('world')
+local world = require('draw_box.world')
 
 local paused = false
 

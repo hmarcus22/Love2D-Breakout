@@ -1,4 +1,4 @@
-local world = require('world')
+local world = require('draw_box.world')
 local state = require('state')
 
 

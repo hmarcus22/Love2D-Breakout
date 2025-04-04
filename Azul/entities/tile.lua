@@ -1,6 +1,6 @@
 -- local Object = require "classic"
 local state = require "state"
-local world = require "world"
+local world = require "draw_box.world"
 local Entity = require "entities/entity"
 
 local Tile = Entity:extend()  

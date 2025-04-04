@@ -1,4 +1,4 @@
-local world = require('world')
+local world = require('draw_box.world')
 
 local bar = {}
 bar.body = love.physics.newBody(world, 200, 450, 'static')
